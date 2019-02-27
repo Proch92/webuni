@@ -1,0 +1,17 @@
+<div id="container">
+	<form>
+		<label for="mail">Mail</label>
+		<input type="text" id="mail" required>
+		<label *ngIf="register" for="name">Name</label>
+		<input *ngIf="register" type="text" id="name">
+		<label for="password">Password</label>
+		<input type="text" id="password" required>
+
+		<button type="submit" class="btn">Submit</button>
+	</form>
+
+	<div (click)="register = !register">
+		<p *ngIf="register">or register a new account</p>
+		<p *ngIf="!register">if you have an existing account, login</p>
+	</div>
+</div>

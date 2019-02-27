@@ -7,6 +7,7 @@ import { SearchbarComponent } from './searchbar/searchbar.component';
 import { FeedComponent } from './feed/feed.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ReviewsDashboardComponent } from './reviews-dashboard/reviews-dashboard.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { ReviewsDashboardComponent } from './reviews-dashboard/reviews-dashboard
     TopbarComponent,
     SearchbarComponent,
     FeedComponent,
-    ReviewsDashboardComponent
+    ReviewsDashboardComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
