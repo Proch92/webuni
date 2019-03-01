@@ -1,13 +1,15 @@
 <div id="container">
-	<form>
+	<form (ngSubmit)="onSubmit()" #loginForm="ngForm">
 		<label for="mail">Mail</label>
-		<input type="text" id="mail" required>
-		<label *ngIf="register" for="name">Name</label>
-		<input *ngIf="register" type="text" id="name">
-		<label for="password">Password</label>
-		<input type="text" id="password" required>
+		<input type="text" id="mail" required [(ngModel)]="mailField" name="mail">
 
-		<button type="submit" class="btn">Submit</button>
+		<label *ngIf="register" for="name">Name</label>
+		<input *ngIf="register" type="text" id="name" required [(ngModel)]="nameField" name="name">
+
+		<label for="password">Password</label>
+		<input type="text" id="password" required [(ngModel)]="passwordField" name="password">
+
+		<button type="submit" [disabled]="!loginForm.form.valid">Submit</button>
 	</form>
 
 	<div (click)="register = !register">
