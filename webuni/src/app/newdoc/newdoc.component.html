@@ -1,0 +1,17 @@
+<div class="container">
+	<form (ngSubmit)="onSubmit()" #newdocForm="ngForm" enctype="multipart/form-data">
+		<label for="title">Title</label>
+		<input type="text" name="title" required [(ngModel)]="titleField">
+
+		<label for="pdfFile">Upload your document in PDF</label>
+		<input 
+			type="file"
+			ng2FileSelect
+			[uploader]="uploader"
+			(onFileSelected)="fileSelection($event)"
+			name="pdfFile"
+			required>
+
+		<button type="submit" [disabled]="!newdocForm.form.valid">Submit for review</button>
+	</form>
+</div>

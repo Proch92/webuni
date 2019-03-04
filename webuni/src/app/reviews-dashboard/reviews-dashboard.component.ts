@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Doc } from '../doc'
-import { DOCS } from '../mock-docs'
+import { DatabaseService } from '../database.service';
+import { SessionService } from '../session.service';
 
 @Component({
 	selector: 'app-reviews-dashboard',
@@ -9,11 +9,17 @@ import { DOCS } from '../mock-docs'
 })
 export class ReviewsDashboardComponent implements OnInit {
 
-	docs = DOCS;
+	docs = null;
 
-	constructor() { }
+	constructor(private db: DatabaseService, private session: SessionService) {}
 
 	ngOnInit() {
+		this.getPersonalDocs();
+	}
+
+	private getPersonalDocs(): void {
+		var id = this.session.getAccountID();
+		this.docs = this.db.select('doc', {owner: id});
 	}
 
 }

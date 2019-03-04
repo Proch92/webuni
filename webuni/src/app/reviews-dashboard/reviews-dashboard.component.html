@@ -1,7 +1,7 @@
 <div id="macro-container">
 	<div class="doc-container">
 		<h1>Your Documents</h1>
-		<div class="doc" *ngFor="let doc of docs">{{doc.title}}</div>
+		<div class="doc" *ngFor="let doc of docs" routerLink="/doc/{{doc.id}}">{{doc.title}}</div>
 	</div>
 	<div class="doc-container">
 		<h1>Your subscriptions</h1>

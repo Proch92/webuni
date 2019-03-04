@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-login',
@@ -10,22 +11,30 @@ export class LoginComponent implements OnInit {
 
 	register: boolean = false;
 
-	nameField: string = "Account Name";
-	passwordField: string = "Password";
-	mailField: string = "Mail";
+	nameField: string = "";
+	passwordField: string = "";
+	mailField: string = "";
 
 	onSubmit() {
-		console.log(this.nameField)
 		if (this.register) {
-			this.auth.register(this.mailField, this.nameField, this.passwordField);
+			var success: boolean = this.auth.register(this.mailField, this.nameField, this.passwordField);
+			console.log(success);
+
+			if (success) {
+				this.router.navigateByUrl('/feed');
+			}
 		}
 		else {
 			var success: boolean = this.auth.login(this.mailField, this.passwordField);
 			console.log(success);
+
+			if (success) {
+				this.router.navigateByUrl('/feed');
+			}
 		}
 	}
 
-	constructor(private auth: AuthService) { }
+	constructor(private auth: AuthService, private router: Router) { }
 
 	ngOnInit() {
 	}
