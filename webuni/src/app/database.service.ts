@@ -59,11 +59,6 @@ export class DatabaseService {
 		var id3 = this.insert('account', {name: 'Sandro Verdi', password: 'sverdi', mail: 'sverdi@mail.it'});
 		var id4 = this.insert('account', {name: 'Michele Proverbio', password: 'mproverbio', mail: 'mproverbio@mail.it'});
 
-		this.insert('doc', {name: 'Angular 12.0', owner: id4, filename: ''});
-		this.insert('doc', {name: 'The Imitation Game', owner: id4, filename: ''});
-		this.insert('doc', {name: 'Quantum Computing 101', owner: id4, filename: ''});
-		this.insert('doc', {name: 'Ghost in the shell: the book', owner: id2, filename: ''});
-
 		this.insert('follow', {follower: id1, following: id3});
 		this.insert('follow', {follower: id4, following: id2});
 		this.insert('follow', {follower: id4, following: id1});

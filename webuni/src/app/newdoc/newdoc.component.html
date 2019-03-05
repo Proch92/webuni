@@ -1,17 +1,9 @@
 <div class="container">
-	<form action="/upload" method="post" (ngSubmit)="onSubmit()" #newdocForm="ngForm" enctype="multipart/form-data">
-		<label for="title">Title</label>
+	<form action="http://192.168.1.13:3000/upload" method="post" (ngSubmit)="onSubmit()" #newdocForm="ngForm" enctype="multipart/form-data">
+		<label for="title">Document Title</label>
 		<input type="text" name="title" required [(ngModel)]="titleField">
 
 		<label for="pdfFile">Upload your document in PDF</label>
-		<input 
-			type="file"
-			ng2FileSelect
-			[uploader]="uploader"
-			(onFileSelected)="fileSelection($event)"
-			name="pdfFile"
-			required>
-
-		<button type="submit" [disabled]="!newdocForm.form.valid">Submit for review</button>
+		<input (change)="fileChange($event)" type="file" name="pdfFile" accept=".pdf" required>
 	</form>
 </div>

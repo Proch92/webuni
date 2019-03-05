@@ -11,6 +11,7 @@ import { DatabaseService } from '../database.service';
 export class DocComponent implements OnInit {
 
 	doc = null;
+	path = "";
 
 	constructor(
 		private db: DatabaseService,
@@ -22,6 +23,7 @@ export class DocComponent implements OnInit {
 		let id = this.route.snapshot.paramMap.get('id');
 
 		this.doc = this.db.select('doc', {id: id})[0];
+		this.path = "/documents/" + this.doc.filename;
 	}
 
 }

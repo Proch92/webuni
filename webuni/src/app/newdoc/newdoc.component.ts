@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../database.service';
 import { SessionService } from '../session.service';
-import { FileUploader } from 'ng2-file-upload';
+import { UploadService } from '../upload.service';
+import { HttpClient, HttpParams, HttpRequest, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 
 const URL = 'http://192.168.1.13:3000/upload/';
 
@@ -12,29 +13,54 @@ const URL = 'http://192.168.1.13:3000/upload/';
 })
 export class NewdocComponent implements OnInit {
 
-	public uploader:FileUploader = new FileUploader({url: URL});
-
 	titleField: string = "";
-	fileName: string = "";
 
-	constructor(private db: DatabaseService, private session: SessionService) { }
+	constructor(private db: DatabaseService, private session: SessionService, private upload:UploadService) { }
 
 	ngOnInit() {
 	}
 
-	onSubmit(): void {
-		this.db.insert('doc', {name: this.titleField, owner: this.session.getAccountID(), filename: this.fileName});
-		this.db.printDB();
-		this.uploader.uploadAll();
+	// At the file input element
+	// (change)="fileChange($event)"
+	fileChange(event) {
+		this.uploadFile(event.target.files);
 	}
 
-	fileSelection(event:any) {
-		var file = event[0];
-		this.fileName = file.name;
+	uploadFile(files: FileList) {
+		if (files.length == 0) {
+			console.log("No file selected!");
+			return;
+		}
+
+		var filename = randFilename();
+
+		let file: File = files[0];
+
+		this.upload.uploadFile(file, filename)
+			.subscribe(
+				event => {
+					if (event.type == HttpEventType.UploadProgress) {
+						const percentDone = Math.round(100 * event.loaded / event.total);
+						console.log(`File is ${percentDone}% loaded.`);
+					} else if (event instanceof HttpResponse) {
+						console.log('File is completely loaded!');
+					}
+				},
+				(err) => {
+					console.log("Upload Error:", err);
+				}, () => {
+					console.log("Upload done");
+				}
+			)
+
+		this.db.insert('doc', {name: this.titleField, owner: this.session.getAccountID(), filename: filename});
 	}
 
-	fileOverBase(event:any) {
-		// change visual stuff
-	}
+}
 
+function randFilename(): string {
+	var S4 = function() {
+		return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+	};
+	return (S4()+S4()+S4()+S4()+S4()+'.pdf');
 }

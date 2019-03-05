@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule }	 from '@angular/forms';
 import { LockerModule } from 'angular-safeguard';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
-import { FileUploadModule } from 'ng2-file-upload';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { TopbarComponent } from './topbar/topbar.component';
@@ -32,7 +32,7 @@ import { NewdocComponent } from './newdoc/newdoc.component';
 		FormsModule,
 		LockerModule,
 		PdfViewerModule,
-		FileUploadModule
+		HttpClientModule
 	],
 	providers: [],
 	bootstrap: [AppComponent]

@@ -3,16 +3,18 @@ var multer = require('multer');
 var fs = require('fs');
 var app = express();
 
-var DIR = './documents/';
+var DIR = './src/documents/';
 
-var upload = multer({
-	dest: DIR,
-	onFileUploadStart: function (file) {
-		console.log(file.originalname + ' is starting ...');
+var storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, DIR);
 	},
-	onFileUploadComplete: function (file) {
-		console.log(file.fieldname + ' uploaded to	' + file.path);
-	});
+	filename: function (req, file, cb) {
+		cb(null, req.body.filename);
+	}
+})
+
+var upload = multer({storage: storage});
 
 app.use(function (req, res, next) {
 	res.setHeader('Access-Control-Allow-Origin', ['*']);
