@@ -25,6 +25,7 @@ export class NewdocComponent implements OnInit {
 	onSubmit(): void {
 		this.db.insert('doc', {name: this.titleField, owner: this.session.getAccountID(), filename: this.fileName});
 		this.db.printDB();
+		this.uploader.uploadAll();
 	}
 
 	fileSelection(event:any) {
