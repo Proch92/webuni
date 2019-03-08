@@ -3,6 +3,9 @@
 	<a routerLink='/rvwdash'>Reviews</a>
 	<app-searchbar></app-searchbar>
 	<a routerLink='/newdoc'>Submit a new document</a>
-	<a routerLink='/login'>Hello, {{name}}</a>
+	<a routerLink='/login'>
+		<p *ngIf='name != ""'> Hello, {{name}}</p>
+		<p *ngIf='name == ""'> Login</p>
+	</a>
 	<a>settings</a>
 </div>

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Locker, DRIVERS } from 'angular-safeguard';
+import { map } from 'rxjs/operators';
 
 @Injectable({
 	providedIn: 'root'

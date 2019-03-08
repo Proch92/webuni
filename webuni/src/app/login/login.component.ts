@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { SessionService } from '../session.service';
 
 @Component({
 	selector: 'app-login',
@@ -17,26 +18,29 @@ export class LoginComponent implements OnInit {
 
 	onSubmit() {
 		if (this.register) {
-			var success: boolean = this.auth.register(this.mailField, this.nameField, this.passwordField);
-			console.log(success);
+			var id: string = this.auth.register(this.mailField, this.nameField, this.passwordField);
 
-			if (success) {
+			if (id != "") {
+				this.session.setAccountID(id);
 				this.router.navigateByUrl('/feed');
 			}
 		}
 		else {
-			var success: boolean = this.auth.login(this.mailField, this.passwordField);
-			console.log(success);
+			var id: string = this.auth.login(this.mailField, this.passwordField);
 
-			if (success) {
+			if (id != "") {
+				this.session.setAccountID(id);
 				this.router.navigateByUrl('/feed');
 			}
 		}
 	}
 
-	constructor(private auth: AuthService, private router: Router) { }
+	constructor(private auth: AuthService, private router: Router, private session: SessionService) { }
 
 	ngOnInit() {
+		if (this.session.getAccountID() != undefined) {
+			this.router.navigateByUrl('/feed');
+		}
 	}
 
 }

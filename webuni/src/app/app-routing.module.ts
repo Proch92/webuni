@@ -8,7 +8,7 @@ import { DocComponent } from './doc/doc.component'
 import { NewdocComponent } from './newdoc/newdoc.component'
 
 const routes: Routes = [
-	{ path: '', redirectTo: '/feed', pathMatch: 'full' },
+	{ path: '', redirectTo: '/login', pathMatch: 'full' },
 	{ path: 'feed', component: FeedComponent },
 	{ path: 'rvwdash', component: ReviewsDashboardComponent },
 	{ path: 'login', component: LoginComponent },

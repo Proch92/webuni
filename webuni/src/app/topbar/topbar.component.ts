@@ -14,7 +14,9 @@ export class TopbarComponent implements OnInit {
 
 	ngOnInit() {
 		var id = this.session.getAccountID();
-		this.name = this.db.select('account', {id: id})[0]['name'];
+		if (id != "") {
+			this.name = this.db.select('account', {id: id})[0]['name'];
+		}
 	}
 
 }

@@ -26,4 +26,26 @@ export class DocComponent implements OnInit {
 		this.path = "/documents/" + this.doc.filename;
 	}
 
+	// reviews
+	mouseCoordinates = {x: -100, y: -100, x_str: "-100px", y_str: "-100px"};
+	isMouseOver: boolean = false;
+
+	mouseEnter() {
+		console.log("mouse enter");
+		this.isMouseOver = true;
+	}
+
+	mouseLeave() {
+		console.log("mouse leave");
+		this.isMouseOver = false;
+	}
+
+	mouseMove(event: any) {
+		this.isMouseOver = true;
+		this.mouseCoordinates.x = event.clientX;
+		this.mouseCoordinates.y = event.clientY;
+		this.mouseCoordinates.x_str = "" + event.clientX + "px";
+		this.mouseCoordinates.y_str = "" + event.clientY + "px";
+	}
+
 }

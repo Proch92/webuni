@@ -1,30 +1,27 @@
 import { Injectable } from '@angular/core';
 import { DatabaseService } from './database.service'
-import { SessionService } from './session.service'
 
 @Injectable({
 	providedIn: 'root'
 })
 export class AuthService {
 
-	constructor(private db: DatabaseService, private session: SessionService) {}
+	constructor(private db: DatabaseService) {}
 
-	login(mail, password): boolean {
-		console.log('attempting login with ' + mail + ' and ' + password);
+	login(mail, password): string {
 		var acc = this.db.select('account', {'mail': mail, 'password': password});
 		if (acc.length > 0) {
 			acc = acc[0];
-			this.session.setAccountID(acc['id']);
-			return true;
+			return acc['id'];
 		} else {
-			return false;
+			return "";
 		}
 	}
 
-	register(mail, name, password): boolean {
+	register(mail, name, password): string {
 		if (this.db.select('account', {'mail': mail}).length > 0) {
 			// account already exists
-			return false;
+			return "";
 		} else {
 			this.db.insert('account', {
 				'mail': mail,
@@ -33,9 +30,8 @@ export class AuthService {
 			});
 
 			var acc = this.db.select('account', {'mail': mail, 'name': name})[0];
-			this.session.setAccountID(acc['id']);
 			
-			return true;
+			return acc['id'];
 		}
 	}
 
