@@ -14,6 +14,7 @@ import { ReviewsDashboardComponent } from './reviews-dashboard/reviews-dashboard
 import { LoginComponent } from './login/login.component';
 import { DocComponent } from './doc/doc.component';
 import { NewdocComponent } from './newdoc/newdoc.component';
+import { AddcommentComponent } from './addcomment/addcomment.component';
 
 @NgModule({
 	declarations: [
@@ -24,7 +25,8 @@ import { NewdocComponent } from './newdoc/newdoc.component';
 		ReviewsDashboardComponent,
 		LoginComponent,
 		DocComponent,
-		NewdocComponent
+		NewdocComponent,
+		AddcommentComponent
 	],
 	imports: [
 		BrowserModule,

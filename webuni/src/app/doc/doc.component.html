@@ -1,9 +1,12 @@
 <div class="container">
 	<h1>{{doc.name}}</h1>
+
 	<div id="pdf-container" (mouseenter)="mouseEnter()" (mouseleave)="mouseLeave()" (mousemove)="mouseMove($event)">
 		<pdf-viewer [src]="path" [render-text]="true"></pdf-viewer>
-	</div>
+		
+		<div *ngIf="isMouseOver && !addingComment" id="marker" [style.top]="markerCoordinates.y || -100" [style.left]="markerCoordinates.x || -100" (mousedown)="markerMouseDown()">marker</div>
 
-	<div *ngIf="isMouseOver" id="marker" [style.top]="mouseCoordinates.y_str || -100" [style.left]="mouseCoordinates.x_str || -100">marker</div>
+		<app-addcomment *ngIf="addingComment" [style.top]="addcommentCoordinates.y || -100" [style.left]="addcommentCoordinates.x || -100" (onSubmitComment)="onSubmitComment($event)"></app-addcomment>
+	</div>
 </div>
 
