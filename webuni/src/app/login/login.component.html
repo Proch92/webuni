@@ -1,15 +1,23 @@
 <div id="container">
+	<h1 *ngIf="!register">Welcome back</h1>
+	<h1 *ngIf="register">Welcome! Nice to meet you</h1>
 	<form (ngSubmit)="onSubmit()" #loginForm="ngForm">
-		<label for="mail">Mail</label>
-		<input type="text" id="mail" required [(ngModel)]="mailField" name="mail">
+		<div class="form-group">
+			<label for="mail">Mail</label>
+			<input type="email" id="mail" class="form-control" required [(ngModel)]="mailField" name="mail" placeholder="example@mail.it">
+		</div>
 
-		<label *ngIf="register" for="name">Name</label>
-		<input *ngIf="register" type="text" id="name" required [(ngModel)]="nameField" name="name">
+		<div class="form-group">
+			<label *ngIf="register" for="name">Name</label>
+			<input *ngIf="register" type="text" class="form-control" id="name" required [(ngModel)]="nameField" name="name" placeholder="Choose a nickname">
+		</div>
 
-		<label for="password">Password</label>
-		<input type="text" id="password" required [(ngModel)]="passwordField" name="password">
+		<div class="form-group">
+			<label for="password">Password</label>
+			<input type="password" id="password" class="form-control" required [(ngModel)]="passwordField" name="password" placeholder="password">
+		</div>
 
-		<button type="submit" [disabled]="!loginForm.form.valid">Submit</button>
+		<button type="submit" class="btn btn-primary" [disabled]="!loginForm.form.valid">Submit</button>
 	</form>
 
 	<div (click)="register = !register">

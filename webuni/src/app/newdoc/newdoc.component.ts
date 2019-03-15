@@ -14,6 +14,7 @@ const URL = 'http://192.168.1.13:3000/upload/';
 export class NewdocComponent implements OnInit {
 
 	titleField: string = "";
+	descriptionField: string = "";
 
 	constructor(private db: DatabaseService, private session: SessionService, private upload:UploadService) { }
 
@@ -53,7 +54,7 @@ export class NewdocComponent implements OnInit {
 				}
 			)
 
-		this.db.insert('doc', {name: this.titleField, owner: this.session.getAccountID(), filename: filename});
+		this.db.insert('doc', {name: this.titleField, description: this.descriptionField, owner: this.session.getAccountID(), filename: filename});
 	}
 
 }

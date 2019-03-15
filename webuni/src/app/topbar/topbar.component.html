@@ -1,11 +1,6 @@
-<div id="topbar">
-	<a routerLink='/feed'>Home</a>
-	<a routerLink='/rvwdash'>Reviews</a>
+<nav class="navbar navbar-expand-xl navbar-light bg-light">
+	<a routerLink='/feed' class="navbar-brand">Peer Review</a>
+	<a routerLink='/rvwdash' class="nav-link">Reviews</a>
+	<a routerLink='/newdoc' class="nav-link mr-auto">Submit a new document</a>
 	<app-searchbar></app-searchbar>
-	<a routerLink='/newdoc'>Submit a new document</a>
-	<a routerLink='/login'>
-		<p *ngIf='name != ""'> Hello, {{name}}</p>
-		<p *ngIf='name == ""'> Login</p>
-	</a>
-	<a>settings</a>
-</div>
+</nav>

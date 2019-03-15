@@ -1,9 +1,19 @@
-<div class="container">
-	<form action="http://192.168.1.13:3000/upload" method="post" (ngSubmit)="onSubmit()" #newdocForm="ngForm" enctype="multipart/form-data">
-		<label for="title">Document Title</label>
-		<input type="text" name="title" required [(ngModel)]="titleField">
-
-		<label for="pdfFile">Upload your document in PDF</label>
-		<input (change)="fileChange($event)" type="file" name="pdfFile" accept=".pdf" required>
+<div class="container mt-5 mb-4">
+	<h2>Submit a new document for review</h2>
+	<form action="http://192.168.1.13:3000/upload" method="post" (ngSubmit)="onSubmit()" #newdocForm="ngForm" enctype="multipart/form-data" class="mt-5">
+		<div class="card shadow-sm">
+			<div class="card-body">
+				<h5 class="card-title">
+					<input type="text" name="title" class="form-control form-control-lg shadow-sm" required [(ngModel)]="titleField" placeholder="Document title">
+				</h5>
+				<p class="card-text">
+					<textarea name="description" class="form-control" rows="3" [(ngModel)]="descriptionField" placeholder="Brief description"></textarea>
+				</p>
+				<div class="custom-file">
+					<input (change)="fileChange($event)" type="file" name="pdfFile" class="custom-file-input" accept=".pdf" [disabled]="!titleField.length" required>
+					<label for="pdfFile" class="custom-file-label">Upload your document in PDF</label>
+				</div>
+			</div>
+		</div>
 	</form>
 </div>

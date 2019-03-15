@@ -1,9 +1,12 @@
-<div id="macro-container">
-	<div class="doc-container">
-		<h1>Your Documents</h1>
-		<div class="doc" *ngFor="let doc of docs" routerLink="/doc/{{doc.id}}">{{doc.name}}</div>
-	</div>
-	<div class="doc-container">
-		<h1>Your subscriptions</h1>
+<div class="container mt-5 mb-4">
+	<h1>Document Dashboard</h1>
+</div>
+<div class="d-flex justify-content-center flex-wrap" id="container">
+	<div class="card shadow-sm m-4" *ngFor="let doc of docs">
+		<div class="card-body">
+			<h5 class="card-title">{{doc.name}}</h5>
+			<p class="card-text">{{doc.description}}</p>
+			<a routerLink="/doc/{{doc.id}}" class="btn btn-primary">Check it out</a>
+		</div>
 	</div>
 </div>

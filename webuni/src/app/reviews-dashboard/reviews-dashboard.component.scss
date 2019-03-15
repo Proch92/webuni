@@ -1,22 +1,7 @@
-#macro-container {
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+.card {
+	min-width: 24rem;
+}
 
-	.doc-container {
-		width: 800px;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		border: 1px solid black;
-		margin: 20px; 
-
-		.doc {
-			width: 700px;
-			height: 150px;
-			border: 1px solid black;
-			margin: 10px;
-		}
-	}
+.card-text {
+	min-height: 8rem;
 }
