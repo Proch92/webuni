@@ -31,7 +31,11 @@
               "src/styles.scss",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.slim.js",
+              "node_modules/popper.js/dist/umd/popper.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js"
+            ],
             "es5BrowserSupport": true
           },
           "configurations": {
@@ -89,7 +93,11 @@
               "src/styles.scss",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.slim.js",
+              "node_modules/popper.js/dist/umd/popper.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js"
+            ],
             "assets": [
               "src/favicon.ico",
               "src/assets",

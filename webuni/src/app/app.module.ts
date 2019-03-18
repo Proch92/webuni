@@ -16,6 +16,9 @@ import { DocComponent } from './doc/doc.component';
 import { NewdocComponent } from './newdoc/newdoc.component';
 import { AddcommentComponent } from './addcomment/addcomment.component';
 
+import * as bootstrap from "bootstrap";
+import * as $ from "jquery";
+
 @NgModule({
 	declarations: [
 		AppComponent,

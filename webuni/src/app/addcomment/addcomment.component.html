@@ -1,4 +1,5 @@
 <form (ngSubmit)="onSubmit()" #addcommentForm="ngForm">
-	<textarea name="comment" rows="10" cols="80" [(ngModel)]="textField"></textarea>
-	<button type="submit">Add comment</button>
+	<textarea name="comment" rows="10" cols="80" [(ngModel)]="textField" class="form-control"></textarea>
+	<button type="submit" class="btn btn-primary">Apply</button>
+	<button type="button" class="btn btn-outline-danger">Discard and close</button>
 </form>
