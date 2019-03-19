@@ -5,6 +5,8 @@ var app = express();
 
 var DIR = './src/documents/';
 
+// file uploader
+
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		cb(null, DIR);

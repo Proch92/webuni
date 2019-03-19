@@ -1,18 +1,26 @@
 <div class="d-flex flex-row justify-content-center mt-4">
 	<div class="lat-panel border shadow-sm rounded mr-4">
 		<h3 class="m-3">Review</h3>
-		<div *ngFor="let comment of comments">
-			<span>{{comment.title}}</span>
-			<i class="material-icons">delete-outline</i>
-		</div>
+		<ul class="list-group list-group-flush">
+			<li *ngFor="let comment of comments; index as i" class="list-group-item d-flex justify-content-between align-items-center mx-2">
+				<span>{{comment.title}}</span>
+				<button class="btn btn-outline-danger btn-sm" (click)="deleteComment(i)">
+					<i class="material-icons">delete</i>
+				</button>
+			</li>
+			<li class="list-group-item d-flex justify-content-between align-items-center mx-2">
+				<button *ngIf="comments.length > 0" class="btn btn-primary" (click)="confirmReview()">Confirm Review</button>
+			</li>
+		</ul>
+		
 	</div>
 
 	<div id="central-panel" class="flex-grow-1 container border shadow-sm rounded mx-4">
 		<h1 class="m-3">{{doc.name}}</h1>
 
 		<div id="pdf-container" (mouseenter)="mouseEnter()" (mouseleave)="mouseLeave()" (mousemove)="mouseMove($event)">
-			<pdf-viewer [src]="path" [render-text]="true"></pdf-viewer>
-			
+			<pdf-viewer id="pdf-viewer" [src]="path" [render-text]="true" class="shadow mx-4 border"></pdf-viewer>
+
 			<button id="marker" class="btn btn-primary" (click)="onMarkerClick()" *ngIf="isMouseOver && !isModalOpen()" id="marker" [style.top]="markerCoordinates.y || -100" [style.left]="markerCoordinates.x || -100">review</button>
 
 			<div class="modal fade" id="addCommentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" (hide.bs.modal)="onModalHide()">
@@ -28,7 +36,7 @@
 							<form>
 								<div class="form-group">
 									<label for="commentField">Comment</label>
-									<textarea name="comment" rows="10" cols="80" [(ngModel)]="addCommentTextField" class="form-control" id="commentField" [(ngModel)]="commentField"></textarea>
+									<textarea name="comment" rows="10" cols="80" [(ngModel)]="commentField" class="form-control" id="commentField" [(ngModel)]="commentField"></textarea>
 								</div>
 								<div class="form-group">
 									<label for="commentTitle">Title</label>

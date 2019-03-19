@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { DatabaseService } from '../database.service';
 import { AddcommentComponent } from '../addcomment/addcomment.component'
+import { SessionService } from '../session.service'
 
 @Component({
 	selector: 'app-doc',
@@ -27,6 +28,7 @@ export class DocComponent implements OnInit {
 
 	constructor(
 		private db: DatabaseService,
+		private session: SessionService,
 		private route: ActivatedRoute,
 		private router: Router
 	) { }
@@ -36,6 +38,29 @@ export class DocComponent implements OnInit {
 
 		this.doc = this.db.select('doc', {id: id})[0];
 		this.path = "/documents/" + this.doc.filename;
+	}
+
+	onMarkerClick() {
+		$('#addCommentModal').modal('show');
+		this.addcommentCoordinates.x = this.toStrPx(this.mouseCoordinates.x);
+		this.addcommentCoordinates.y = this.toStrPx(this.mouseCoordinates.y);
+	}
+
+	onApply() {
+		var ref = this.addcommentCoordinates.y;
+		this.comments.push({reference: ref, title: this.commentTitleField, comment: this.commentField});
+		this.commentField = "";
+		this.commentTitleField = "";
+		$('#addCommentModal').modal('hide');
+	}
+
+	confirmReview() {
+		this.db.insert('review', {docid: this.doc.id, reviewer: this.session.getAccountID(), comments: this.comments});
+		this.comments = [];
+	}
+
+	deleteComment(index) {
+		this.comments.splice(index, 1);
 	}
 
 	mouseEnter() {
@@ -51,20 +76,10 @@ export class DocComponent implements OnInit {
 		this.isMouseOver = true;
 		this.mouseCoordinates.x = event.clientX + window.pageXOffset;
 		this.mouseCoordinates.y = event.clientY + window.pageYOffset;
-		this.markerCoordinates.x = this.toStrPx(this.mouseCoordinates.x - 10);
+
+		var x_offset = $("#pdf-viewer").offset().left;
+		this.markerCoordinates.x = this.toStrPx(x_offset + 10);
 		this.markerCoordinates.y = this.toStrPx(this.mouseCoordinates.y - 10);
-	}
-
-	onMarkerClick() {
-		$('#addCommentModal').modal('show');
-		this.addcommentCoordinates.x = this.toStrPx(this.mouseCoordinates.x);
-		this.addcommentCoordinates.y = this.toStrPx(this.mouseCoordinates.y);
-	}
-
-	onApply() {
-		var ref = this.addcommentCoordinates.y;
-		this.comments.push({reference: ref, title: this.commentTitleField, comment: this.commentField});
-		$('#addCommentModal').modal('hide');
 	}
 
 	isModalOpen() {
