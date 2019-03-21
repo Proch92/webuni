@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { SessionService } from '../session.service';
+import { DatabaseService } from '../database.service';
 
 @Component({
 	selector: 'app-login',
@@ -18,24 +19,33 @@ export class LoginComponent implements OnInit {
 
 	onSubmit() {
 		if (this.register) {
-			var id: string = this.auth.register(this.mailField, this.nameField, this.passwordField);
-
-			if (id != "") {
-				this.session.setAccountID(id);
-				this.router.navigateByUrl('/feed');
-			}
+			this.db.insert('account', {
+					'mail': this.mailField,
+					'name': this.nameField,
+					'password': this.passwordField
+				}).subscribe(account => {
+					console.log('register', account);
+					if (account) {
+						this.session.setAccountID(account['id']);
+						this.router.navigateByUrl('/feed');
+					}
+				});
 		}
 		else {
-			var id: string = this.auth.login(this.mailField, this.passwordField);
-
-			if (id != "") {
-				this.session.setAccountID(id);
-				this.router.navigateByUrl('/feed');
-			}
+			this.db.select('account', {
+					'mail': this.mailField,
+					'password': this.passwordField
+				}).subscribe(account => {
+					console.log('login', account);
+					if (account) {
+						this.session.setAccountID(account['id']);
+						this.router.navigateByUrl('/feed');
+					}
+				});
 		}
 	}
 
-	constructor(private auth: AuthService, private router: Router, private session: SessionService) { }
+	constructor(private auth: AuthService, private router: Router, private session: SessionService, private db: DatabaseService) { }
 
 	ngOnInit() {
 		if (this.session.getAccountID() != undefined) {

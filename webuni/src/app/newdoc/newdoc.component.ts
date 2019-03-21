@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../database.service';
 import { SessionService } from '../session.service';
 import { UploadService } from '../upload.service';
+import { Router } from '@angular/router';
 import { HttpClient, HttpParams, HttpRequest, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 
 const URL = 'http://192.168.1.13:3000/upload/';
@@ -16,7 +17,7 @@ export class NewdocComponent implements OnInit {
 	titleField: string = "";
 	descriptionField: string = "";
 
-	constructor(private db: DatabaseService, private session: SessionService, private upload:UploadService) { }
+	constructor(private router: Router, private db: DatabaseService, private session: SessionService, private upload:UploadService) { }
 
 	ngOnInit() {
 	}
@@ -42,7 +43,7 @@ export class NewdocComponent implements OnInit {
 				event => {
 					if (event.type == HttpEventType.UploadProgress) {
 						const percentDone = Math.round(100 * event.loaded / event.total);
-						console.log(`File is ${percentDone}% loaded.`);
+						console.log('File is ${percentDone}% loaded.');
 					} else if (event instanceof HttpResponse) {
 						console.log('File is completely loaded!');
 					}
@@ -54,7 +55,8 @@ export class NewdocComponent implements OnInit {
 				}
 			)
 
-		this.db.insert('doc', {name: this.titleField, description: this.descriptionField, owner: this.session.getAccountID(), filename: filename});
+		this.db.insert('doc', {'name': this.titleField, 'description': this.descriptionField, 'owner': this.session.getAccountID(), 'filename': filename})
+			.subscribe(data => this.router.navigateByUrl('/rvwdash'));
 	}
 
 }

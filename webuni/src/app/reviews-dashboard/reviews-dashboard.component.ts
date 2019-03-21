@@ -19,7 +19,7 @@ export class ReviewsDashboardComponent implements OnInit {
 
 	private getPersonalDocs(): void {
 		var id = this.session.getAccountID();
-		this.docs = this.db.select('doc', {owner: id});
+		this.db.select('doc', {'owner': id})
+			.subscribe(docs => this.docs = docs);
 	}
-
 }

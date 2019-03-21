@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { DatabaseService } from '../database.service';
-import { AddcommentComponent } from '../addcomment/addcomment.component'
 import { SessionService } from '../session.service'
 
 @Component({
@@ -11,8 +10,6 @@ import { SessionService } from '../session.service'
 	styleUrls: ['./doc.component.scss']
 })
 export class DocComponent implements OnInit {
-
-	@ViewChild(AddcommentComponent) addcommentComponent:AddcommentComponent;
 
 	doc = null;
 	path = "";
@@ -36,8 +33,11 @@ export class DocComponent implements OnInit {
 	ngOnInit() {
 		let id = this.route.snapshot.paramMap.get('id');
 
-		this.doc = this.db.select('doc', {id: id})[0];
-		this.path = "/documents/" + this.doc.filename;
+		this.db.select('doc', {id: id})
+			.subscribe(data => {
+				this.doc = data[0];
+				this.path = "/documents/" + this.doc.filename;
+			});
 	}
 
 	onMarkerClick() {
@@ -55,8 +55,8 @@ export class DocComponent implements OnInit {
 	}
 
 	confirmReview() {
-		this.db.insert('review', {docid: this.doc.id, reviewer: this.session.getAccountID(), comments: this.comments});
-		this.comments = [];
+		this.db.insert('review', {docid: this.doc.id, reviewer: this.session.getAccountID(), comments: this.comments})
+			.subscribe(_ => this.comments = []);
 	}
 
 	deleteComment(index) {
@@ -72,7 +72,6 @@ export class DocComponent implements OnInit {
 	}
 
 	mouseMove(event: any) {
-		console.log(window.pageYOffset);
 		this.isMouseOver = true;
 		this.mouseCoordinates.x = event.clientX + window.pageXOffset;
 		this.mouseCoordinates.y = event.clientY + window.pageYOffset;

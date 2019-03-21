@@ -8,15 +8,9 @@ import { SessionService } from '../session.service';
 	styleUrls: ['./topbar.component.scss']
 })
 export class TopbarComponent implements OnInit {
-	name = "";
-
 	constructor(private db: DatabaseService, private session: SessionService) { }
 
 	ngOnInit() {
-		var id = this.session.getAccountID();
-		if (id != "") {
-			this.name = this.db.select('account', {id: id})[0]['name'];
-		}
 	}
 
 }
