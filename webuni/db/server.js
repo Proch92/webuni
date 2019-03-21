@@ -1,5 +1,9 @@
 var loki = require('lokijs');
-var db = new loki('db.json');
+var db = new loki('db.json', {
+	autoload: true,
+	autoloadCallback: initDB,
+	autosave: true
+});
 var express = require('express');
 var app = express();
 
@@ -21,14 +25,13 @@ function startExpress() {
 		record = req.body;
 		record['id'] = generateID();
 		var ret = db.getCollection(req.params['table']).insert(record);
-		db.saveDatabase(err => console.log(err ? 'error saving db': 'saved successfully'));
 		console.log('res', ret);
 		res.json(ret);
 	});
 
 	app.get('/db/:table', function (req, res) {
 		console.log('get', req.query);
-		console.log('post req.params', req.params);
+		console.log('get req.params', req.params);
 		var ret = db.getCollection(req.params['table']).find(req.query);
 		console.log('res', ret);
 		res.json(ret);
@@ -39,12 +42,6 @@ function startExpress() {
 	app.listen(PORT, '0.0.0.0', function () {
 		console.log('Working on port ' + PORT);
 	});
-}
-
-function startDatabase() {
-	if (db.listCollections().length == 0) {
-		initDB();
-	}
 }
 
 function initDB() {
@@ -58,7 +55,11 @@ function initDB() {
 		'follow'
 	];
 
-	collections.forEach(col => db.addCollection(col));
+	collections.forEach(col => {
+		if (!db.getCollection(col)) {
+			db.addCollection(col);
+		}
+	});
 }
 
 function generateID() {
@@ -69,7 +70,6 @@ function generateID() {
 }
 
 function main() {
-	startDatabase();
 	startExpress();
 }
 

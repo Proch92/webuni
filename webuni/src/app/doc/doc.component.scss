@@ -2,18 +2,22 @@ pdf-viewer {
 	display: block;
 }
 
-#marker {
-	position: absolute;
-	top: 100px;
-	left: 100px;
-}
-
-app-addcomment {
-	position: absolute;
-	top: 100px;
-	left: 100px;
-}
-
 .lat-panel {
 	width: 14%;
+}
+
+#pdf-container {
+	position: relative;
+}
+
+#overpdf {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.marker {
+	position: absolute;
 }

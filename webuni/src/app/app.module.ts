@@ -18,6 +18,7 @@ import { AddcommentComponent } from './addcomment/addcomment.component';
 
 import * as bootstrap from "bootstrap";
 import * as $ from "jquery";
+import { BoardComponent } from './board/board.component';
 
 @NgModule({
 	declarations: [
@@ -29,7 +30,8 @@ import * as $ from "jquery";
 		LoginComponent,
 		DocComponent,
 		NewdocComponent,
-		AddcommentComponent
+		AddcommentComponent,
+		BoardComponent
 	],
 	imports: [
 		BrowserModule,

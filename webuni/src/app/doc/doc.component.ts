@@ -17,11 +17,11 @@ export class DocComponent implements OnInit {
 	// reviews --------------------------------------------
 	mouseCoordinates = {x: -100, y: -100};
 	markerCoordinates = {x: "-100px", y: "-100px"};
-	addcommentCoordinates = {x: "-100px", y: "-100px"};
+	addboardCoordinates = {x: "-100px", y: "-100px"};
 	isMouseOver: boolean = false;
 	commentField = "";
 	commentTitleField = "";
-	comments = []
+	boards = null;
 
 	constructor(
 		private db: DatabaseService,
@@ -34,41 +34,39 @@ export class DocComponent implements OnInit {
 		let id = this.route.snapshot.paramMap.get('id');
 
 		this.db.select('doc', {id: id})
-			.subscribe(data => {
+			.subscribe((data: any[]) => {
 				this.doc = data[0];
 				this.path = "/documents/" + this.doc.filename;
+				this.loadBoards();
 			});
 	}
 
-	onMarkerClick() {
-		$('#addCommentModal').modal('show');
-		this.addcommentCoordinates.x = this.toStrPx(this.mouseCoordinates.x);
-		this.addcommentCoordinates.y = this.toStrPx(this.mouseCoordinates.y);
+	loadBoards() {
+		this.db.select('board', {doc: this.doc.id})
+			.subscribe(boards => {
+				this.boards = boards;
+			});
 	}
 
 	onApply() {
-		var ref = this.addcommentCoordinates.y;
-		this.comments.push({reference: ref, title: this.commentTitleField, comment: this.commentField});
-		this.commentField = "";
-		this.commentTitleField = "";
-		$('#addCommentModal').modal('hide');
+		var ref = {x:this.addboardCoordinates.x, y: this.addboardCoordinates.y};
+		this.db.insert('board', {doc: this.doc.id, reference: ref, title: this.commentTitleField, owner: this.session.getAccountID()})
+			.subscribe(newboard => {
+				console.log('board inserted in db', newboard);
+				this.db.insert('comment', {board: newboard['id'], text: this.commentField, owner: this.session.getAccountID()})
+					.subscribe(_ => this.commentField = "");
+				
+				this.loadBoards();
+				this.commentTitleField = "";
+				$('#addCommentModal').modal('hide');
+			});
 	}
 
-	confirmReview() {
-		this.db.insert('review', {docid: this.doc.id, reviewer: this.session.getAccountID(), comments: this.comments})
-			.subscribe(_ => this.comments = []);
-	}
-
-	deleteComment(index) {
-		this.comments.splice(index, 1);
-	}
-
-	mouseEnter() {
-		this.isMouseOver = true;
-	}
-
-	mouseLeave() {
-		this.isMouseOver = false;
+	onPdfClick(event: any) {
+		console.log("open pdf modal");
+		$('#addCommentModal').modal('show');
+		this.addboardCoordinates.x = this.toStrPx(event.layerX);
+		this.addboardCoordinates.y = this.toStrPx(event.layerY);
 	}
 
 	mouseMove(event: any) {
