@@ -1,9 +1,17 @@
 <div class="d-flex flex-row justify-content-center mt-4">
-	<div id="central-panel" class="flex-grow-1 container border shadow-sm rounded mx-4">
-		<h1 class="m-3">{{doc.name}}</h1>
+	<div id="central-panel" class="flex-grow-1 container border shadow-sm rounded mx-4 px-4">
+		<div class="m-3 d-flex flex-row justify-content-between align-self-center">
+			<h3>{{doc.name}}</h3>
+			<div *ngIf="doc.owner == sessionID" class="btn-group" role="group" aria-label="document control dashboard">
+				<button type="button" class="btn btn-primary">Freeze Version</button>
+				<button type="button" class="btn btn-danger btn-sm">
+					<i class="material-icons">delete</i>
+				</button>
+			</div>
+		</div>
 
 		<div id="pdf-container" (mousemove)="mouseMove($event)">
-			<pdf-viewer id="pdf-viewer" [src]="path" class="shadow mx-4 border"></pdf-viewer>
+			<pdf-viewer id="pdf-viewer" [src]="path" class="shadow border"></pdf-viewer>
 			<div id="overpdf" (click)="onPdfClick($event)"></div>
 			<app-board *ngFor="let b of boards" [board]=b class="marker" [style.top]="b.reference.y" [style.left]="b.reference.x"></app-board>
 		</div>

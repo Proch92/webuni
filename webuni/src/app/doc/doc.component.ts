@@ -13,6 +13,7 @@ export class DocComponent implements OnInit {
 
 	doc = null;
 	path = "";
+	sessionID = "";
 
 	// reviews --------------------------------------------
 	mouseCoordinates = {x: -100, y: -100};
@@ -32,6 +33,7 @@ export class DocComponent implements OnInit {
 
 	ngOnInit() {
 		let id = this.route.snapshot.paramMap.get('id');
+		this.sessionID = this.session.getAccountID();
 
 		this.db.select('doc', {id: id})
 			.subscribe((data: any[]) => {
@@ -45,15 +47,16 @@ export class DocComponent implements OnInit {
 		this.db.select('board', {doc: this.doc.id})
 			.subscribe(boards => {
 				this.boards = boards;
+				console.log("boards loaded", boards);
 			});
 	}
 
 	onApply() {
 		var ref = {x:this.addboardCoordinates.x, y: this.addboardCoordinates.y};
-		this.db.insert('board', {doc: this.doc.id, reference: ref, title: this.commentTitleField, owner: this.session.getAccountID()})
+		this.db.insert('board', {doc: this.doc.id, reference: ref, title: this.commentTitleField, owner: this.sessionID})
 			.subscribe(newboard => {
 				console.log('board inserted in db', newboard);
-				this.db.insert('comment', {board: newboard['id'], text: this.commentField, owner: this.session.getAccountID()})
+				this.db.insert('comment', {board: newboard['id'], text: this.commentField, owner: this.sessionID})
 					.subscribe(_ => this.commentField = "");
 				
 				this.loadBoards();

@@ -24,8 +24,12 @@ export class BoardComponent implements OnInit {
 	}
 
 	loadComments() {
+		console.log("loading comments. board ID:", this.board['id']);
 		this.db.select('comment', {board: this.board['id']})
-			.subscribe(comments => this.comments = comments);
+			.subscribe(comments => {
+				this.comments = comments;
+				console.log("loading comments", comments);
+			});
 	}
 
 	onApply() {
@@ -34,7 +38,7 @@ export class BoardComponent implements OnInit {
 	}
 
 	onMarkerClick(event: any) {
-		$('#boardModal').modal('show');
+		$('#' + this.board['id']).modal('show');
 		event.stopPropagation();
 		event.preventDefault();
 	}
