@@ -1,18 +1,19 @@
-<button (click)="onMarkerClick($event)">{{board.title}}</button>
+<img src="assets/newthread.svg" (click)="onMarkerClick($event)">
 
 <div class="modal fade" id="{{board.id}}" tabindex="-1" role="dialog" aria-labelledby="boardModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Board</h5>
+				<h5 class="modal-title" id="exampleModalLabel">{{board.title}}</h5>
 				<button type="button" class="close" data-dismiss="modal">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
 				<ul class="list-group list-group-flush">
-					<li *ngFor="let comment of comments">
-						<span>{{comment.text}}</span>
+					<li class="list-group-item" *ngFor="let comment of comments">
+						<p class="font-weight-bold">{{findOwner(comment.owner)}}</p>
+						<p>{{comment.text}}</p>
 					</li>
 				</ul>
 			</div>

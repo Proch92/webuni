@@ -1,9 +1,9 @@
 <div class="d-flex flex-row justify-content-center mt-4">
 	<div id="central-panel" class="flex-grow-1 container border shadow-sm rounded mx-4 px-4">
 		<div class="m-3 d-flex flex-row justify-content-between align-self-center">
-			<h3>{{doc.name}}</h3>
+			<h1>{{doc.name}}</h1>
 			<div *ngIf="doc.owner == sessionID" class="btn-group" role="group" aria-label="document control dashboard">
-				<button type="button" class="btn btn-primary">Freeze Version</button>
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#freezeModal">Freeze Version</button>
 				<button type="button" class="btn btn-danger btn-sm">
 					<i class="material-icons">delete</i>
 				</button>
@@ -44,9 +44,41 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="modal fade" id="freezeModal" tabindex="-1" role="dialog" aria-labelledby="freezeModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Upload the new version</h5>
+						<button type="button" class="close" data-dismiss="modal">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group">
+								<label for="commentTitle">Comment</label>
+								<input type="text" name="freezeComment" id="freezeComment" class="form-control" placeholder="Comment" [(ngModel)]="freezeCommentField">
+							</div>
+							<div class="custom-file">
+								<input (change)="fileChange($event)" type="file" name="freezeNewFile" class="custom-file-input" accept=".pdf" required>
+								<label for="freezeNewFile" class="custom-file-label">Upload the next version in PDF</label>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" (click)="onApplyFreeze()">Load</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Discard</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<div class="lat-panel border shadow-sm rounded ml-4">
 		<h3 class="m-3">Versioning</h3>
+		<ul class="list-group list-group-flush">
+			<li class="list-group-item" *ngFor="let version of versions">{{version.version}} - {{version.comment}}</li>
+		</ul>
 	</div>
 </div>

@@ -13,6 +13,7 @@ export class BoardComponent implements OnInit {
 
 	commentField = "";
 	comments;
+	accounts;
 
 	constructor(
 		private db: DatabaseService,
@@ -21,15 +22,25 @@ export class BoardComponent implements OnInit {
 
 	ngOnInit() {
 		this.loadComments()
+		this.loadAccounts() // bad in real applications
 	}
 
 	loadComments() {
-		console.log("loading comments. board ID:", this.board['id']);
 		this.db.select('comment', {board: this.board['id']})
 			.subscribe(comments => {
 				this.comments = comments;
-				console.log("loading comments", comments);
 			});
+	}
+
+	loadAccounts() {
+		this.db.select('account', {})
+			.subscribe(accounts => {
+				this.accounts = accounts;
+			});
+	}
+
+	findOwner(owner) {
+		return this.accounts.filter(a => a.id === owner)[0].name
 	}
 
 	onApply() {

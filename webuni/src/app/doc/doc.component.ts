@@ -2,7 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { DatabaseService } from '../database.service';
-import { SessionService } from '../session.service'
+import { SessionService } from '../session.service';
+import { UploadService } from '../upload.service';
+import { HttpClient, HttpParams, HttpRequest, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 
 @Component({
 	selector: 'app-doc',
@@ -12,8 +14,41 @@ import { SessionService } from '../session.service'
 export class DocComponent implements OnInit {
 
 	doc = null;
+	versions = null;
+	activeVersion = null;
+	highestVersion = 0;
 	path = "";
 	sessionID = "";
+
+
+	constructor(
+		private db: DatabaseService,
+		private session: SessionService,
+		private route: ActivatedRoute,
+		private router: Router,
+		private upload:UploadService
+	) { }
+
+	ngOnInit() {
+		let id = this.route.snapshot.paramMap.get('id');
+		this.sessionID = this.session.getAccountID();
+
+		this.db.select('doc', {id: id})
+			.subscribe((data: any[]) => {
+				this.doc = data[0];
+				console.log('doc loaded', this.doc);
+
+				this.db.select('version', {docid: this.doc.id})
+					.subscribe((versions: Array<Object>) => {
+						console.log('versions loaded', versions);
+						this.versions = versions.sort((a,b) => b['version'] - a['version']);
+						console.log('sorted', this.versions);
+						this.activeVersion = this.versions[0];
+						this.path = "/documents/" + this.activeVersion.filename;
+						this.loadBoards(this.activeVersion.id);
+					});
+			});
+	}
 
 	// reviews --------------------------------------------
 	mouseCoordinates = {x: -100, y: -100};
@@ -24,27 +59,8 @@ export class DocComponent implements OnInit {
 	commentTitleField = "";
 	boards = null;
 
-	constructor(
-		private db: DatabaseService,
-		private session: SessionService,
-		private route: ActivatedRoute,
-		private router: Router
-	) { }
-
-	ngOnInit() {
-		let id = this.route.snapshot.paramMap.get('id');
-		this.sessionID = this.session.getAccountID();
-
-		this.db.select('doc', {id: id})
-			.subscribe((data: any[]) => {
-				this.doc = data[0];
-				this.path = "/documents/" + this.doc.filename;
-				this.loadBoards();
-			});
-	}
-
-	loadBoards() {
-		this.db.select('board', {doc: this.doc.id})
+	loadBoards(versionid) {
+		this.db.select('board', {version: versionid})
 			.subscribe(boards => {
 				this.boards = boards;
 				console.log("boards loaded", boards);
@@ -53,13 +69,13 @@ export class DocComponent implements OnInit {
 
 	onApply() {
 		var ref = {x:this.addboardCoordinates.x, y: this.addboardCoordinates.y};
-		this.db.insert('board', {doc: this.doc.id, reference: ref, title: this.commentTitleField, owner: this.sessionID})
+		this.db.insert('board', {version: this.activeVersion.id, reference: ref, title: this.commentTitleField, owner: this.sessionID})
 			.subscribe(newboard => {
 				console.log('board inserted in db', newboard);
 				this.db.insert('comment', {board: newboard['id'], text: this.commentField, owner: this.sessionID})
 					.subscribe(_ => this.commentField = "");
 				
-				this.loadBoards();
+				this.loadBoards(this.activeVersion.id);
 				this.commentTitleField = "";
 				$('#addCommentModal').modal('hide');
 			});
@@ -86,8 +102,49 @@ export class DocComponent implements OnInit {
 		return $('#addCommentModal').hasClass('show');
 	}
 
+	// ----------------- versioning --------------------------
+	freezeCommentField = "";
+	file;
+
+	fileChange(event) {
+		this.file = event.target.files[0];
+	}
+
+	onApplyFreeze() {
+		let filename = randFilename();
+
+		this.upload.uploadFile(this.file, filename)
+			.subscribe(
+				event => {
+					if (event.type == HttpEventType.UploadProgress) {
+						const percentDone = Math.round(100 * event.loaded / event.total);
+						console.log('File is ${percentDone}% loaded.');
+					} else if (event instanceof HttpResponse) {
+						console.log('File is completely loaded!');
+					}
+				},
+				(err) => {
+					console.log("Upload Error:", err);
+				}, () => {
+					console.log("Upload done");
+				}
+			)
+
+		this.db.insert('version', {'docid': this.doc.id, 'comment': this.freezeCommentField, 'filename': filename, 'version': this.versions[0].version + 1})
+			.subscribe(data => this.router.navigateByUrl('/doc/' + this.doc.id));
+	}
+
+	///////////////////////////////////////////////////////////
+
 	toStrPx(val: number): string {
 		return "" + val + "px";
 	}
 
+}
+
+function randFilename(): string {
+	var S4 = function() {
+		return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+	};
+	return (S4()+S4()+S4()+S4()+S4()+'.pdf');
 }

@@ -55,8 +55,13 @@ export class NewdocComponent implements OnInit {
 				}
 			)
 
-		this.db.insert('doc', {'name': this.titleField, 'description': this.descriptionField, 'owner': this.session.getAccountID(), 'filename': filename})
-			.subscribe(data => this.router.navigateByUrl('/rvwdash'));
+		this.db.insert('doc', {'name': this.titleField, 'description': this.descriptionField, 'owner': this.session.getAccountID()})
+			.subscribe(data => {
+				this.db.insert('version', {'docid': data['id'], 'comment': 'first  version', 'filename': filename, 'version': 0})
+					.subscribe(data => console.log('new version'));
+
+				this.router.navigateByUrl('/rvwdash');
+			});
 	}
 
 }

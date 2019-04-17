@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { FeedComponent } from './feed/feed.component'
+import { FeedComponent } from './feed/feed.component';
 import { ReviewsDashboardComponent } from './reviews-dashboard/reviews-dashboard.component'
-import { LoginComponent } from './login/login.component'
-import { DocComponent } from './doc/doc.component'
-import { NewdocComponent } from './newdoc/newdoc.component'
+import { LoginComponent } from './login/login.component';
+import { DocComponent } from './doc/doc.component';
+import { NewdocComponent } from './newdoc/newdoc.component';
 
 const routes: Routes = [
 	{ path: '', redirectTo: '/login', pathMatch: 'full' },
