@@ -18,7 +18,6 @@ export class DatabaseService {
 	}
 
 	select(table, filter) {
-		console.log('select', filter);
 		return this.http.get(this.fullUrl('db/' + table), {params: filter});
 	}
 

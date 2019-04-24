@@ -4,6 +4,7 @@ import { switchMap } from 'rxjs/operators';
 import { DatabaseService } from '../database.service';
 import { SessionService } from '../session.service';
 import { UploadService } from '../upload.service';
+import { EventService } from '../event.service';
 import { HttpClient, HttpParams, HttpRequest, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 
 @Component({
@@ -26,7 +27,8 @@ export class DocComponent implements OnInit {
 		private session: SessionService,
 		private route: ActivatedRoute,
 		private router: Router,
-		private upload:UploadService
+		private upload:UploadService,
+		private events:EventService
 	) { }
 
 	ngOnInit() {
@@ -36,13 +38,10 @@ export class DocComponent implements OnInit {
 		this.db.select('doc', {id: id})
 			.subscribe((data: any[]) => {
 				this.doc = data[0];
-				console.log('doc loaded', this.doc);
 
 				this.db.select('version', {docid: this.doc.id})
 					.subscribe((versions: Array<Object>) => {
-						console.log('versions loaded', versions);
 						this.versions = versions.sort((a,b) => b['version'] - a['version']);
-						console.log('sorted', this.versions);
 						this.activeVersion = this.versions[0];
 						this.path = "/documents/" + this.activeVersion.filename;
 						this.loadBoards(this.activeVersion.id);
@@ -63,7 +62,6 @@ export class DocComponent implements OnInit {
 		this.db.select('board', {version: versionid})
 			.subscribe(boards => {
 				this.boards = boards;
-				console.log("boards loaded", boards);
 			});
 	}
 
@@ -71,18 +69,18 @@ export class DocComponent implements OnInit {
 		var ref = {x:this.addboardCoordinates.x, y: this.addboardCoordinates.y};
 		this.db.insert('board', {version: this.activeVersion.id, reference: ref, title: this.commentTitleField, owner: this.sessionID})
 			.subscribe(newboard => {
-				console.log('board inserted in db', newboard);
 				this.db.insert('comment', {board: newboard['id'], text: this.commentField, owner: this.sessionID})
 					.subscribe(_ => this.commentField = "");
 				
 				this.loadBoards(this.activeVersion.id);
 				this.commentTitleField = "";
 				$('#addCommentModal').modal('hide');
+
+				this.events.sendEvent({type: "newcomment", owner: this.sessionID, title: this.commentTitleField});
 			});
 	}
 
 	onPdfClick(event: any) {
-		console.log("open pdf modal");
 		$('#addCommentModal').modal('show');
 		this.addboardCoordinates.x = this.toStrPx(event.layerX);
 		this.addboardCoordinates.y = this.toStrPx(event.layerY);

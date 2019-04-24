@@ -19,6 +19,7 @@ import { AddcommentComponent } from './addcomment/addcomment.component';
 import * as bootstrap from "bootstrap";
 import * as $ from "jquery";
 import { BoardComponent } from './board/board.component';
+import { NotifyComponent } from './notify/notify.component';
 
 @NgModule({
 	declarations: [
@@ -31,7 +32,8 @@ import { BoardComponent } from './board/board.component';
 		DocComponent,
 		NewdocComponent,
 		AddcommentComponent,
-		BoardComponent
+		BoardComponent,
+		NotifyComponent
 	],
 	imports: [
 		BrowserModule,

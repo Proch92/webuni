@@ -13,7 +13,7 @@ export class BoardComponent implements OnInit {
 
 	commentField = "";
 	comments;
-	accounts;
+	accounts = [];
 
 	constructor(
 		private db: DatabaseService,
@@ -34,13 +34,18 @@ export class BoardComponent implements OnInit {
 
 	loadAccounts() {
 		this.db.select('account', {})
-			.subscribe(accounts => {
+			.subscribe((accounts: Array<any>) => {
 				this.accounts = accounts;
 			});
 	}
 
 	findOwner(owner) {
-		return this.accounts.filter(a => a.id === owner)[0].name
+		var owners;
+		owners = this.accounts.filter(a => a.id === owner);
+		if (owners.length > 0) {
+			return owners[0].name
+		}
+		return ""
 	}
 
 	onApply() {
