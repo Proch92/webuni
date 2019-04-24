@@ -8,8 +8,7 @@ import { EventService } from '../event.service';
 })
 export class NotifyComponent implements OnInit {
 
-	stack = [];
-	activeNotification = null;
+	notifications = [];
 
 	constructor(private events:EventService) { }
 
@@ -17,15 +16,15 @@ export class NotifyComponent implements OnInit {
 		this.events.events.subscribe(event => {
 			console.log('new event: ', event);
 			this.notifications.push(event);
-			$('#' + event.id).toast('show');
-			$('#' + event.id).on('hidden.bs.toast', this.onHidden)
-		}, 
+			setTimeout(() => {
+				$('#' + event.id).toast('show');
+				var self = this;
+				$('#' + event.id).on('hidden.bs.toast', function() {
+					self.notifications = self.notifications.filter(notif => notif.id != event.id);
+				});
+			}, 500);
+		},
 		null, 
 		null);
-	}
-
-	onHidden(event) {
-		console.log('hidden, ', event);
-		//this.notifications = this.notifications.filter(notif => notif.id != event.id);
 	}
 }

@@ -71,12 +71,14 @@ export class DocComponent implements OnInit {
 			.subscribe(newboard => {
 				this.db.insert('comment', {board: newboard['id'], text: this.commentField, owner: this.sessionID})
 					.subscribe(_ => this.commentField = "");
+
+
+				this.events.sendEvent({type: "newboard", owner: this.sessionID, title: 'added a comment: '+this.commentTitleField, message: this.commentField.substring(0,10)+'...'});
 				
 				this.loadBoards(this.activeVersion.id);
 				this.commentTitleField = "";
 				$('#addCommentModal').modal('hide');
 
-				this.events.sendEvent({type: "newcomment", owner: this.sessionID, title: this.commentTitleField});
 			});
 	}
 

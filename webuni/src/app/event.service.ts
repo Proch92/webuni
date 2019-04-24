@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs'
+import { Observable, Subject } from 'rxjs';
+import { DatabaseService } from './database.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -8,14 +9,20 @@ export class EventService {
 
 	public events = new Subject<any>();
 
-	constructor() {	}
+	constructor(private db: DatabaseService) {	}
 
 	sendEvent(event) {
-		console.log('event received. gonna notify subscribers')
-		//save in db
-		//add to events
-		event['id'] = randID();
-		this.events.next(event);
+		this.db.insert('event', event)
+			.subscribe(e => {
+				this.db.select('account', {id: e['owner']})
+				.subscribe((owners: Array<any>) => {
+					if (owners.length > 0) {
+						e['ownerName'] = owners[0].name;
+					}
+					this.events.next(e);
+				});
+			});
+		
 	}
 }
 

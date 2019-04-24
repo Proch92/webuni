@@ -52,7 +52,8 @@ function initDB() {
 		'subscription',
 		'board',
 		'comment',
-		'follow'
+		'follow',
+		'event'
 	];
 
 	collections.forEach(col => {
