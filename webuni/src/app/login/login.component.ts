@@ -17,6 +17,8 @@ export class LoginComponent implements OnInit {
 	passwordField: string = "";
 	mailField: string = "";
 
+	constructor(private auth: AuthService, private router: Router, private session: SessionService, private db: DatabaseService) { }
+	
 	onSubmit() {
 		if (this.register) {
 			this.db.insert('account', {
@@ -38,17 +40,17 @@ export class LoginComponent implements OnInit {
 				}).subscribe(account => {
 					console.log('login', account);
 					if (account) {
-						this.session.setAccountID(account['id']);
+						this.session.setAccountID(account[0]['id']);
 						this.router.navigateByUrl('/feed');
 					}
 				});
 		}
 	}
 
-	constructor(private auth: AuthService, private router: Router, private session: SessionService, private db: DatabaseService) { }
-
 	ngOnInit() {
-		if (this.session.getAccountID() != undefined) {
+		var id = this.session.getAccountID();
+		console.log(id);
+		if (id != undefined && id != '0') {
 			this.router.navigateByUrl('/feed');
 		}
 	}

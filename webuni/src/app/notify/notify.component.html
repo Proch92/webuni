@@ -1,7 +1,7 @@
-<div style="position: absolute; top: 0; height: 100%; width: 100%;">
+<div style="position: fixed; top: 50; height: 100%; width: 100%; z-index: -10;">
   <!-- Then put toasts within -->
   <div class="d-flex flex-column align-items-end p-5 mt-3">
-    <div *ngFor="let notif of notifications" id="{{notif['id']}}" class="toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true" style="min-width: 350px;">
+    <div *ngFor="let notif of notifications" id="{{notif['id']}}" class="toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true" style="min-width: 350px; z-index: 1000">
       <div class="toast-header">
         <strong class="mr-auto">{{notif['ownerName']}}</strong>
         <strong>{{notif['title']}}</strong>
