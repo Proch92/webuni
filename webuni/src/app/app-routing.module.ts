@@ -10,7 +10,7 @@ import { NewdocComponent } from './newdoc/newdoc.component';
 const routes: Routes = [
 	{ path: '', redirectTo: '/login', pathMatch: 'full' },
 	{ path: 'feed', component: FeedComponent },
-	{ path: 'rvwdash', component: ReviewsDashboardComponent },
+	{ path: 'rvwdash/:id', component: ReviewsDashboardComponent },
 	{ path: 'login', component: LoginComponent },
 	{ path: 'doc/:id', component: DocComponent },
 	{ path: 'newdoc', component: NewdocComponent }

@@ -11,7 +11,7 @@ var app = express();
 function startExpress() {
 	app.use(function (req, res, next) {
 		res.setHeader('Access-Control-Allow-Origin', ['*']);
-		res.setHeader('Access-Control-Allow-Methods', ['GET', 'POST']);
+		res.setHeader('Access-Control-Allow-Methods', ['GET', 'POST', 'DELETE']);
 		res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 		res.setHeader('Access-Control-Allow-Credentials', true);
 		next();
@@ -33,6 +33,14 @@ function startExpress() {
 		console.log('get', req.query);
 		console.log('get req.params', req.params);
 		var ret = db.getCollection(req.params['table']).find(req.query);
+		console.log('res', ret);
+		res.json(ret);
+	});
+
+	app.delete('/db/:table', function (req, res) {
+		console.log('delete', req.query);
+		console.log('delete req.params', req.params);
+		var ret = db.getCollection(req.params['table']).findAndRemove(req.query);
 		console.log('res', ret);
 		res.json(ret);
 	});

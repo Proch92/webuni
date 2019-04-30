@@ -25,6 +25,10 @@ export class DatabaseService {
 		return this.http.post(this.fullUrl('db/' + table), record, this.httpOptions);
 	}
 
+	delete(table, filter) {
+		return this.http.delete(this.fullUrl('db/' + table), {params: filter});
+	}
+
 	fullUrl(uri) {
 		return this.server + uri;
 	}
