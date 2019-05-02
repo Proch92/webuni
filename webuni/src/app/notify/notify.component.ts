@@ -15,11 +15,20 @@ export class NotifyComponent implements OnInit {
 	constructor(private db:DatabaseService, private session:SessionService, private events:EventService) { }
 
 	ngOnInit() {
-		this.events.events.subscribe(event => {
+		//setInterval(checkEvents, 5000);
+		
+	}
+
+	checkEvents() {
+		return null;
+		/*this.db.select('event', {}).subscribe(events => {
 			this.db.select('follow', {follower: this.session.getAccountID()})
 				.subscribe((following:Array<Object>) => {
+					console.log('notify following: ', following);
 					var foll_ids = following.map(f => f['following']);
-					if (event.owner in foll_ids) {
+					console.log('notify foll_ids: ', foll_ids);
+					if (foll_ids.includes(event.owner)) {
+						console.log('notify ok pushing event');
 						this.notifications.push(event);
 						setTimeout(() => {
 							$('#' + event.id).toast('show');
@@ -32,6 +41,6 @@ export class NotifyComponent implements OnInit {
 				})
 		},
 		null, 
-		null);
+		null);*/
 	}
 }

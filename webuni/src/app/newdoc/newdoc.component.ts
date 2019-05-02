@@ -3,6 +3,7 @@ import { DatabaseService } from '../database.service';
 import { SessionService } from '../session.service';
 import { UploadService } from '../upload.service';
 import { Router } from '@angular/router';
+import { EventService } from '../event.service';
 import { HttpClient, HttpParams, HttpRequest, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 
 const URL = 'http://192.168.1.13:3000/upload/';
@@ -17,7 +18,7 @@ export class NewdocComponent implements OnInit {
 	titleField: string = "";
 	descriptionField: string = "";
 
-	constructor(private router: Router, private db: DatabaseService, private session: SessionService, private upload:UploadService) { }
+	constructor(private router: Router, private db: DatabaseService, private session: SessionService, private upload:UploadService, private events:EventService) { }
 
 	ngOnInit() {
 	}
@@ -58,7 +59,18 @@ export class NewdocComponent implements OnInit {
 		this.db.insert('doc', {'name': this.titleField, 'description': this.descriptionField, 'owner': this.session.getAccountID()})
 			.subscribe(data => {
 				this.db.insert('version', {'docid': data['id'], 'comment': 'first  version', 'filename': filename, 'version': 0})
-					.subscribe(data => console.log('new version'));
+					.subscribe(data => {
+						console.log('new version');
+						this.events.sendEvent({
+							type: "newdoc", 
+							owner: this.session.getAccountID(), 
+							verb: 'submitted a new document:',
+							title: this.titleField, 
+							message: this.descriptionField,
+							targetName: this.titleField,
+							link: '/doc/'+data['id']
+						});
+					});
 
 				this.router.navigateByUrl('/rvwdash');
 			});

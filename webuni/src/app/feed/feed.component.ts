@@ -19,10 +19,11 @@ export class FeedComponent implements OnInit {
 
 	loadEvents() {
 		this.db.select('event', {}).subscribe((events: Array<Object>) => {
+			console.log('events: ', events);
 			this.db.select('follow', {follower: this.session.getAccountID()})
-				.subscribe((following: Array<Object>) => {
-					var foll_ids = following.map(f => f['following']);
-					this.events = events.filter(e => e['owner'] in foll_ids);
+				.subscribe((follows: Array<Object>) => {
+					var foll_ids = follows.map(f => f['following']);
+					this.events = events.filter(e => foll_ids.includes(e['owner']));
 				})
 		})
 	}

@@ -72,8 +72,15 @@ export class DocComponent implements OnInit {
 				this.db.insert('comment', {board: newboard['id'], text: this.commentField, owner: this.sessionID})
 					.subscribe(_ => this.commentField = "");
 
-
-				this.events.sendEvent({type: "newboard", owner: this.sessionID, title: 'added a comment: '+this.commentTitleField, message: this.commentField.substring(0,10)+'...'});
+				this.events.sendEvent({
+					type: "newboard", 
+					owner: this.sessionID, 
+					verb: 'commented on',
+					title: this.commentTitleField, 
+					message: this.commentField,
+					targetName: this.doc.name,
+					link: '/doc/'+this.doc.id
+				});
 				
 				this.loadBoards(this.activeVersion.id);
 				this.commentTitleField = "";
@@ -131,7 +138,18 @@ export class DocComponent implements OnInit {
 			)
 
 		this.db.insert('version', {'docid': this.doc.id, 'comment': this.freezeCommentField, 'filename': filename, 'version': this.versions[0].version + 1})
-			.subscribe(data => this.router.navigateByUrl('/doc/' + this.doc.id));
+			.subscribe(data => {
+				this.events.sendEvent({
+					type: "newversion", 
+					owner: this.sessionID, 
+					verb: 'submitted a new version:',
+					title: this.commentTitleField, 
+					message: this.freezeCommentField,
+					targetName: this.doc.name,
+					link: '/doc/'+this.doc.id
+				});
+				this.router.navigateByUrl('/doc/' + this.doc.id);
+			});
 	}
 
 	///////////////////////////////////////////////////////////

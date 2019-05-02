@@ -1,5 +1,11 @@
-<div id="feed-container">
-	<div *ngFor="let event of events" class="feed-block">
-		{{event.type}}
+<div id="feed-container" class="container">
+	<div *ngFor="let event of events" class="card m-4 shadow-sm" routerLink="{{event.link}}">
+		<div class="card-header">
+			{{event.ownerName}} {{event.verb}} {{event.targetName}}
+		</div>
+		<div class="card-body">
+			<h5 class="card-title">{{event.title}}</h5>
+			<p class="card-text">{{event.message}}</p>
+		</div>
 	</div>
 </div>

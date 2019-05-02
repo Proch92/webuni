@@ -12,17 +12,15 @@ export class EventService {
 	constructor(private db: DatabaseService) {	}
 
 	sendEvent(event) {
-		this.db.insert('event', event)
-			.subscribe(e => {
-				this.db.select('account', {id: e['owner']})
-				.subscribe((owners: Array<any>) => {
-					if (owners.length > 0) {
-						e['ownerName'] = owners[0].name;
-					}
-					this.events.next(e);
-				});
+		this.db.select('account', {id: event['owner']})
+			.subscribe((owners: Array<any>) => {
+				if (owners.length > 0) {
+					event['ownerName'] = owners[0].name;
+				}
+				this.events.next(event);
+				this.db.insert('event', event)
+					.subscribe(e => {});
 			});
-		
 	}
 }
 
