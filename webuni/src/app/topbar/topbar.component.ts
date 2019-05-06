@@ -9,12 +9,10 @@ import { Router } from '@angular/router';
 	styleUrls: ['./topbar.component.scss']
 })
 export class TopbarComponent implements OnInit {
-	sessionID = null;
 
 	constructor(private router: Router, private db: DatabaseService, private session: SessionService) { }
 
 	ngOnInit() {
-		this.sessionID = this.session.getAccountID();
 	}
 
 	onLogout() {

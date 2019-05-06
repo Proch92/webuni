@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-xl navbar-light bg-light">
 	<a routerLink='/feed' class="navbar-brand">Peer Review</a>
-	<a routerLink='/rvwdash/{{sessionID}}' class="nav-link">Reviews</a>
+	<a routerLink='/rvwdash/{{session.getAccountID()}}' class="nav-link">Reviews</a>
 	<a routerLink='/newdoc' class="nav-link mr-auto">Submit a new document</a>
 	<app-searchbar class="mr-2"></app-searchbar>
 	<div class="dropdown pr-4">

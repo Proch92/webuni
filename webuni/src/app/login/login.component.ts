@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { SessionService } from '../session.service';
@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
 	passwordField: string = "";
 	mailField: string = "";
 
-	constructor(private auth: AuthService, private router: Router, private session: SessionService, private db: DatabaseService) { }
+	constructor(private auth: AuthService, private router: Router, private session: SessionService, private db: DatabaseService, private zone:NgZone) { }
 	
 	onSubmit() {
 		if (this.register) {
@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
 					console.log('register', account);
 					if (account) {
 						this.session.setAccountID(account['id']);
-						this.router.navigateByUrl('/feed');
+						this.zone.run(() => this.router.navigateByUrl('/feed'));
 					}
 				});
 		}
@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
 					console.log('login', account);
 					if (account) {
 						this.session.setAccountID(account[0]['id']);
-						this.router.navigateByUrl('/feed');
+						this.zone.run(() => this.router.navigateByUrl('/feed'));
 					}
 				});
 		}
