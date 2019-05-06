@@ -20,28 +20,28 @@ function startExpress() {
 	app.use(express.json());
 
 	app.post('/db/:table', function (req, res) {
-		console.log('post', req.body);
-		console.log('post req.params', req.params);
 		record = req.body;
 		record['id'] = generateID();
-		var ret = db.getCollection(req.params['table']).insert(record);
-		console.log('res', ret);
+		var table = db.getCollection(req.params['table']);
+		
+		var last_prog = -1;
+		if (table.count() > 0) {
+			last_prog = table.max('progressive');;
+		}
+		record['progressive'] = last_prog + 1;
+		console.log("record['progressive'], ", req.params['table'], ': ', record['progressive']);
+
+		var ret = table.insert(record);
 		res.json(ret);
 	});
 
 	app.get('/db/:table', function (req, res) {
-		console.log('get', req.query);
-		console.log('get req.params', req.params);
 		var ret = db.getCollection(req.params['table']).find(req.query);
-		console.log('res', ret);
 		res.json(ret);
 	});
 
 	app.delete('/db/:table', function (req, res) {
-		console.log('delete', req.query);
-		console.log('delete req.params', req.params);
 		var ret = db.getCollection(req.params['table']).findAndRemove(req.query);
-		console.log('res', ret);
 		res.json(ret);
 	});
 
@@ -57,7 +57,6 @@ function initDB() {
 		'account',
 		'doc',
 		'version',
-		'subscription',
 		'board',
 		'comment',
 		'follow',

@@ -6,10 +6,23 @@ import { DatabaseService } from './database.service';
 	providedIn: 'root'
 })
 export class EventService {
-
+	last_signature = -1;
 	public events = new Subject<any>();
 
-	constructor(private db: DatabaseService) {	}
+	constructor(private db: DatabaseService) {
+		this.init();
+	}
+
+	init() {
+		this.db.select('event', {}).subscribe((events:Array<any>) => {
+			if (events.length > 0) {
+				this.last_signature = Math.max(...events.map(e => e['progressive']));
+			}
+			console.log('init event service. last signature: ', this.last_signature);
+			var self = this;
+			setInterval(this.checkEvents, 5000, self);
+		});
+	}
 
 	sendEvent(event) {
 		this.db.select('account', {id: event['owner']})
@@ -17,10 +30,20 @@ export class EventService {
 				if (owners.length > 0) {
 					event['ownerName'] = owners[0].name;
 				}
-				this.events.next(event);
 				this.db.insert('event', event)
 					.subscribe(e => {});
 			});
+	}
+
+	checkEvents(self) {
+		self.db.select('event', {}).subscribe((events:Array<any>) => {
+			var new_events = events.filter(e => e['progressive'] > self.last_signature);
+			if (new_events.length > 0) {
+				self.last_signature = Math.max(...new_events.map(e => e['progressive']));
+			}
+			console.log('last signature: ', self.last_signature);
+			new_events.forEach(e => self.events.next(e));
+		});
 	}
 }
 

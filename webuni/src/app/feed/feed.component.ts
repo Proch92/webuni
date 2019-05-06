@@ -24,6 +24,7 @@ export class FeedComponent implements OnInit {
 				.subscribe((follows: Array<Object>) => {
 					var foll_ids = follows.map(f => f['following']);
 					this.events = events.filter(e => foll_ids.includes(e['owner']));
+					this.events = this.events.reverse();
 				})
 		})
 	}

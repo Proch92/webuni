@@ -10,37 +10,25 @@ import { SessionService } from '../session.service';
 })
 export class NotifyComponent implements OnInit {
 
-	notifications = [];
+	notification = null;
 
 	constructor(private db:DatabaseService, private session:SessionService, private events:EventService) { }
 
 	ngOnInit() {
-		//setInterval(checkEvents, 5000);
-		
-	}
-
-	checkEvents() {
-		return null;
-		/*this.db.select('event', {}).subscribe(events => {
+		this.events.events.subscribe(event => {
 			this.db.select('follow', {follower: this.session.getAccountID()})
 				.subscribe((following:Array<Object>) => {
-					console.log('notify following: ', following);
 					var foll_ids = following.map(f => f['following']);
-					console.log('notify foll_ids: ', foll_ids);
 					if (foll_ids.includes(event.owner)) {
 						console.log('notify ok pushing event');
-						this.notifications.push(event);
+						this.notification = event;
 						setTimeout(() => {
 							$('#' + event.id).toast('show');
-							var self = this;
-							$('#' + event.id).on('hidden.bs.toast', function() {
-								self.notifications = self.notifications.filter(notif => notif.id != event.id);
-							});
 						}, 500);
 					}
-				})
-		},
-		null, 
-		null);*/
+				});
+			});
 	}
+
+	
 }
