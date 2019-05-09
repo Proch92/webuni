@@ -6,6 +6,11 @@ pdf-viewer {
 	width: 14%;
 }
 
+.central-panel {
+	width: 60%;
+	max-width: 850px;
+}
+
 #pdf-container {
 	position: relative;
 }
@@ -16,7 +21,7 @@ pdf-viewer {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	cursor: url(/assets/newthread.png), auto;
+	cursor: url(/assets/newthread_transp.png), auto;
 }
 
 .marker {

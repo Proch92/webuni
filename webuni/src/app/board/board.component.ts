@@ -50,7 +50,9 @@ export class BoardComponent implements OnInit {
 
 	onApply() {
 		this.db.insert('comment', {board: this.board['id'], text: this.commentField, owner: this.session.getAccountID()})
-			.subscribe(_ => this.loadComments());
+			.subscribe(_ => {
+				this.loadComments();
+			});
 	}
 
 	onMarkerClick(event: any) {

@@ -1,16 +1,14 @@
 <div class="d-flex flex-row justify-content-center mt-4">
-	<div id="central-panel" class="flex-grow-1 container border shadow-sm rounded mx-4 px-4">
-		<div class="m-3 d-flex flex-row justify-content-between align-self-center">
-			<h1>{{doc.name}}</h1>
-			<div *ngIf="doc.owner == sessionID" class="btn-group" role="group" aria-label="document control dashboard">
+	<div class="central-panel flex-grow-1 shadow-sm mx-4 card">
+		<div class="card-header bg-my-primary btn-toolbar">
+			<h1 class="btn-group mr-auto">{{doc.name}}</h1>
+			<span *ngIf="doc.owner == sessionID" class="btn-group btn-group-lg" role="group" aria-label="document control dashboard" style="display: inline;">
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#freezeModal">Freeze Version</button>
-				<button type="button" class="btn btn-danger btn-sm">
-					<i class="material-icons">delete</i>
-				</button>
-			</div>
+				<button type="button" class="btn btn-danger btn-sm"><i class="material-icons">delete_outline</i></button>
+			</span>
 		</div>
 
-		<div id="pdf-container" (mousemove)="mouseMove($event)">
+		<div id="pdf-container" class="card-body" (mousemove)="mouseMove($event)">
 			<pdf-viewer id="pdf-viewer" [src]="path" class="shadow border"></pdf-viewer>
 			<div id="overpdf" (click)="onPdfClick($event)"></div>
 			<app-board *ngFor="let b of boards" [board]=b class="marker" [style.top]="b.reference.y" [style.left]="b.reference.x"></app-board>
@@ -75,10 +73,14 @@
 		</div>
 	</div>
 
-	<div class="lat-panel border shadow-sm rounded ml-4">
-		<h3 class="m-3">Versioning</h3>
-		<ul class="list-group list-group-flush">
-			<li class="list-group-item" *ngFor="let version of versions">{{version.version}} - {{version.comment}}</li>
+	<div class="lat-panel shadow-sm card ml-4">
+		<div class="card-header bg-my-primary">
+			<h1>Versioning</h1>
+		</div>
+		<ul class="list-group list-group-flush card-body">
+			<li class="list-group-item" *ngFor="let version of versions">
+				<a routerLink="/doc/{{doc.id}}/{{version.id}}">{{version.version}} - {{version.comment}}</a>
+			</li>
 		</ul>
 	</div>
 </div>

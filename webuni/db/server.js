@@ -20,6 +20,7 @@ function startExpress() {
 	app.use(express.json());
 
 	app.post('/db/:table', function (req, res) {
+		console.log('post');
 		record = req.body;
 		record['id'] = generateID();
 		var table = db.getCollection(req.params['table']);
@@ -29,18 +30,19 @@ function startExpress() {
 			last_prog = table.max('progressive');;
 		}
 		record['progressive'] = last_prog + 1;
-		console.log("record['progressive'], ", req.params['table'], ': ', record['progressive']);
 
 		var ret = table.insert(record);
 		res.json(ret);
 	});
 
 	app.get('/db/:table', function (req, res) {
+		console.log('get');
 		var ret = db.getCollection(req.params['table']).find(req.query);
 		res.json(ret);
 	});
 
 	app.delete('/db/:table', function (req, res) {
+		console.log('delete');
 		var ret = db.getCollection(req.params['table']).findAndRemove(req.query);
 		res.json(ret);
 	});

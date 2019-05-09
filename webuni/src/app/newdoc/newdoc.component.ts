@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { DatabaseService } from '../database.service';
 import { SessionService } from '../session.service';
 import { UploadService } from '../upload.service';
@@ -17,8 +17,9 @@ export class NewdocComponent implements OnInit {
 
 	titleField: string = "";
 	descriptionField: string = "";
+	file_selected: File = null;
 
-	constructor(private router: Router, private db: DatabaseService, private session: SessionService, private upload:UploadService, private events:EventService) { }
+	constructor(private router: Router, private db: DatabaseService, private session: SessionService, private upload:UploadService, private events:EventService, private zone:NgZone) { }
 
 	ngOnInit() {
 	}
@@ -26,20 +27,19 @@ export class NewdocComponent implements OnInit {
 	// At the file input element
 	// (change)="fileChange($event)"
 	fileChange(event) {
-		this.uploadFile(event.target.files);
+		var files = event.target.files;
+		if (files.length > 0) {
+			this.file_selected = files[0];
+			console.log(this.file_selected);
+		} else {
+			this.file_selected = null;
+		}
 	}
 
-	uploadFile(files: FileList) {
-		if (files.length == 0) {
-			console.log("No file selected!");
-			return;
-		}
-
+	onUpload() {
 		var filename = randFilename();
 
-		let file: File = files[0];
-
-		this.upload.uploadFile(file, filename)
+		this.upload.uploadFile(this.file_selected, filename)
 			.subscribe(
 				event => {
 					if (event.type == HttpEventType.UploadProgress) {
@@ -72,7 +72,7 @@ export class NewdocComponent implements OnInit {
 						});
 					});
 
-				this.router.navigateByUrl('/rvwdash');
+				this.zone.run(() => this.router.navigateByUrl('/rvwdash'));
 			});
 	}
 

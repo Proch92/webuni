@@ -32,21 +32,31 @@ export class DocComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
-		let id = this.route.snapshot.paramMap.get('id');
 		this.sessionID = this.session.getAccountID();
 
-		this.db.select('doc', {id: id})
-			.subscribe((data: any[]) => {
-				this.doc = data[0];
+		this.route.params.forEach((params) => {
+			var id = params['id'];
+			var	versionID = params['version'];
 
-				this.db.select('version', {docid: this.doc.id})
-					.subscribe((versions: Array<Object>) => {
-						this.versions = versions.sort((a,b) => b['version'] - a['version']);
-						this.activeVersion = this.versions[0];
-						this.path = "/documents/" + this.activeVersion.filename;
-						this.loadBoards(this.activeVersion.id);
-					});
-			});
+			this.db.select('doc', {id: id})
+				.subscribe((data: any[]) => {
+					this.doc = data[0];
+
+					this.db.select('version', {docid: this.doc.id})
+						.subscribe((versions: Array<Object>) => {
+							this.versions = versions.sort((a,b) => b['version'] - a['version']);
+
+							if (versionID) {
+								this.activeVersion = this.versions.filter(v => v['id'] == versionID)[0];
+							} else {
+								this.activeVersion = this.versions[0];
+							}
+
+							this.path = "/documents/" + this.activeVersion.filename;
+							this.loadBoards(this.activeVersion.id);
+						});
+				});
+		})
 	}
 
 	// reviews --------------------------------------------
@@ -75,7 +85,7 @@ export class DocComponent implements OnInit {
 				this.events.sendEvent({
 					type: "newboard", 
 					owner: this.sessionID, 
-					verb: 'commented on',
+					verb: 'opened a new board on',
 					title: this.commentTitleField, 
 					message: this.commentField,
 					targetName: this.doc.name,

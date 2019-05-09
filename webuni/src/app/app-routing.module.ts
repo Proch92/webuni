@@ -13,6 +13,7 @@ const routes: Routes = [
 	{ path: 'rvwdash/:id', component: ReviewsDashboardComponent },
 	{ path: 'login', component: LoginComponent },
 	{ path: 'doc/:id', component: DocComponent },
+	{ path: 'doc/:id/:version', component: DocComponent },
 	{ path: 'newdoc', component: NewdocComponent }
 ]
 

@@ -1,12 +1,14 @@
 <div class="container mt-5 mb-4">
-	<h1>{{name}}</h1>
+	<h1>{{name}} <span class="text-muted"> - Documents</span></h1>
 	<button *ngIf="(sessionID != profileID) && (!following)" class="btn btn-primary" (click)="onFollow()">Follow</button>
 	<button *ngIf="(sessionID != profileID) && (following)" class="btn btn-danger" (click)="onFollow()">Unfollow</button>
 </div>
 <div class="container">
 	<div class="card shadow-sm m-4" *ngFor="let doc of docs" routerLink="/doc/{{doc.id}}">
+		<h3 class="card-header bg-my-primary text-dark">
+			<i class="material-icons mr-3">insert_drive_file</i>{{doc.name}}
+		</h3>
 		<div class="card-body">
-			<h5 class="card-title">{{doc.name}}</h5>
 			<p class="card-text">{{doc.description}}</p>
 		</div>
 	</div>

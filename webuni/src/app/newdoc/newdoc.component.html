@@ -4,7 +4,7 @@
 		<div class="card shadow-sm">
 			<div class="card-body">
 				<h5 class="card-title">
-					<input type="text" name="title" class="form-control form-control-lg shadow-sm" required [(ngModel)]="titleField" placeholder="Document title">
+					<input type="text" name="title" class="form-control form-control-lg shadow-sm" required [(ngModel)]="titleField" placeholder="Document title" required>
 				</h5>
 				<p class="card-text">
 					<textarea name="description" class="form-control" rows="3" [(ngModel)]="descriptionField" placeholder="Brief description"></textarea>
@@ -12,7 +12,9 @@
 				<div class="custom-file">
 					<input (change)="fileChange($event)" type="file" name="pdfFile" class="custom-file-input" accept=".pdf" [disabled]="!titleField.length" required>
 					<label for="pdfFile" class="custom-file-label">Upload your document in PDF</label>
+					<p *ngIf="file_selected" id="filename">{{file_selected.name}}</p>
 				</div>
+				<button type="submit" class="btn bg-my-primary mt-3" (click)="onUpload()" [disabled]="!titleField.length || !(file_selected)">Upload</button>
 			</div>
 		</div>
 	</form>

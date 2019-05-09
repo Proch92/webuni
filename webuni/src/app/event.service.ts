@@ -41,9 +41,19 @@ export class EventService {
 			if (new_events.length > 0) {
 				self.last_signature = Math.max(...new_events.map(e => e['progressive']));
 			}
-			console.log('last signature: ', self.last_signature);
 			new_events.forEach(e => self.events.next(e));
 		});
+	}
+
+	getIcon(type) {
+		switch(type) {
+			case 'newdoc':
+				return 'note_add';
+			case 'newboard':
+				return 'rate_review';
+			case 'newversion':
+				return 'done';
+		}
 	}
 }
 

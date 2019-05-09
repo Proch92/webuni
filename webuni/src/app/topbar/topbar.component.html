@@ -1,12 +1,36 @@
-<nav class="navbar navbar-expand-xl navbar-light bg-light">
-	<a routerLink='/feed' class="navbar-brand">Peer Review</a>
-	<a routerLink='/rvwdash/{{session.getAccountID()}}' class="nav-link">Reviews</a>
-	<a routerLink='/newdoc' class="nav-link mr-auto">Submit a new document</a>
-	<app-searchbar class="mr-2"></app-searchbar>
-	<div class="dropdown pr-4">
-		<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
-		<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			<a class="dropdown-item" routerLink='/rvwdash/{{sessionID}}'>View Profile</a>
+<nav class="navbar navbar-expand-xl navbar-dark bg-dark">
+	<a routerLink='/feed' class="navbar-brand text-light">Peer Review</a>
+	<ul class="navbar-nav mr-auto">
+		<li class="nav-item">
+			<a routerLink='/rvwdash/{{session.getAccountID()}}' class="nav-link">Reviews</a>
+		</li>
+		<li class="nav-item">
+			<a routerLink='/newdoc' class="nav-link">Submit a new document</a>
+		</li>
+	</ul>
+		
+	<app-searchbar class="mr-3"></app-searchbar>
+	
+	<div class="nav-item dropdown">
+		<a class="nav-link text-light" href="#" role="button" id="dropdownMenuLinkNotif" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="getEvents()"><i class="material-icons">notifications</i></a>
+		<div class="dropdown-menu dropdown-menu-right mt-2" aria-labelledby="dropdownMenuButton">
+			<a *ngFor="let event of notifications_menu" class="dropdown-item" routerLink='{{event.link}}'>
+				<div class="row" style="width: 170px">
+					<div class="col-1">
+						<i class="material-icons">{{events.getIcon(event.type)}}</i>
+					</div>
+					<div class="col">
+						{{event.ownerName}}<br/>
+						{{event.targetName}}
+					</div>
+				</div>
+			</a>
+		</div>
+	</div>
+	<div class="nav-item dropdown pr-4">
+		<a class="nav-link text-light" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
+		<div class="dropdown-menu dropdown-menu-right mt-2" aria-labelledby="dropdownMenuButton">
+			<a class="dropdown-item" routerLink='/rvwdash/{{session.getAccountID()}}'>View Profile</a>
 			<a class="dropdown-item" (click)="onLogout()">Log Out</a>
 		</div>
 	</div>
