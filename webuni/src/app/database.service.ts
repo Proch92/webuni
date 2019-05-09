@@ -12,7 +12,7 @@ export class DatabaseService {
 		})
 	};
 
-	server = "http://192.168.1.13:3001/";
+	server = "http://casatest.ddns.net:3001/";
 	
 	constructor(private http: HttpClient) {
 	}

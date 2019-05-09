@@ -1,37 +1,42 @@
-<nav class="navbar navbar-expand-xl navbar-dark bg-dark">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
 	<a routerLink='/feed' class="navbar-brand text-light">Peer Review</a>
-	<ul class="navbar-nav mr-auto">
-		<li class="nav-item">
-			<a routerLink='/rvwdash/{{session.getAccountID()}}' class="nav-link">Reviews</a>
-		</li>
-		<li class="nav-item">
-			<a routerLink='/newdoc' class="nav-link">Submit a new document</a>
-		</li>
-	</ul>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item">
+				<a routerLink='/rvwdash/{{session.getAccountID()}}' class="nav-link">Reviews</a>
+			</li>
+			<li class="nav-item">
+				<a routerLink='/newdoc' class="nav-link">Submit a new document</a>
+			</li>
+		</ul>
+			
+		<app-searchbar class="mr-3"></app-searchbar>
 		
-	<app-searchbar class="mr-3"></app-searchbar>
-	
-	<div class="nav-item dropdown">
-		<a class="nav-link text-light" href="#" role="button" id="dropdownMenuLinkNotif" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="getEvents()"><i class="material-icons">notifications</i></a>
-		<div class="dropdown-menu dropdown-menu-right mt-2" aria-labelledby="dropdownMenuButton">
-			<a *ngFor="let event of notifications_menu" class="dropdown-item" routerLink='{{event.link}}'>
-				<div class="row" style="width: 170px">
-					<div class="col-1">
-						<i class="material-icons">{{events.getIcon(event.type)}}</i>
+		<div class="nav-item dropdown">
+			<a class="nav-link text-light" href="#" role="button" id="dropdownMenuLinkNotif" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="getEvents()"><i class="material-icons">notifications</i></a>
+			<div class="dropdown-menu dropdown-menu-right mt-2" aria-labelledby="dropdownMenuButton">
+				<a *ngFor="let event of notifications_menu" class="dropdown-item" routerLink='{{event.link}}'>
+					<div class="row" style="width: 170px">
+						<div class="col-1">
+							<i class="material-icons">{{events.getIcon(event.type)}}</i>
+						</div>
+						<div class="col">
+							{{event.ownerName}}<br/>
+							{{event.targetName}}
+						</div>
 					</div>
-					<div class="col">
-						{{event.ownerName}}<br/>
-						{{event.targetName}}
-					</div>
-				</div>
-			</a>
+				</a>
+			</div>
 		</div>
-	</div>
-	<div class="nav-item dropdown pr-4">
-		<a class="nav-link text-light" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
-		<div class="dropdown-menu dropdown-menu-right mt-2" aria-labelledby="dropdownMenuButton">
-			<a class="dropdown-item" routerLink='/rvwdash/{{session.getAccountID()}}'>View Profile</a>
-			<a class="dropdown-item" (click)="onLogout()">Log Out</a>
+		<div class="nav-item dropdown pr-4">
+			<a class="nav-link text-light" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
+			<div class="dropdown-menu dropdown-menu-right mt-2" aria-labelledby="dropdownMenuButton">
+				<a class="dropdown-item" routerLink='/rvwdash/{{session.getAccountID()}}'>View Profile</a>
+				<a class="dropdown-item" (click)="onLogout()">Log Out</a>
+			</div>
 		</div>
 	</div>
 </nav>

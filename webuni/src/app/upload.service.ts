@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpRequest, HttpEvent } from '@angular/common/http';
 import { Observable } from "rxjs";
 
-var url: string = "http://192.168.1.13:3000/upload";
+var url: string = "http://casatest.ddns.net:3000/upload";
 
 @Injectable({
 	providedIn: 'root'

@@ -4,11 +4,13 @@ pdf-viewer {
 
 .lat-panel {
 	width: 14%;
+	min-width: 200px;
 }
 
 .central-panel {
 	width: 60%;
 	max-width: 850px;
+	min-width: 300px;
 }
 
 #pdf-container {
@@ -26,4 +28,11 @@ pdf-viewer {
 
 .marker {
 	position: absolute;
+}
+
+@media ( max-width: 1280px ) {
+	#versioningh1 {
+		font-size: 2em;
+
+	}
 }

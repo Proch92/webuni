@@ -14,6 +14,7 @@ const routes: Routes = [
 	{ path: 'login', component: LoginComponent },
 	{ path: 'doc/:id', component: DocComponent },
 	{ path: 'doc/:id/:version', component: DocComponent },
+	{ path: 'doc/:id/:version/:board', component: DocComponent },
 	{ path: 'newdoc', component: NewdocComponent }
 ]
 

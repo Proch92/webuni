@@ -36,7 +36,11 @@ export class DocComponent implements OnInit {
 
 		this.route.params.forEach((params) => {
 			var id = params['id'];
+			console.log(id);
 			var	versionID = params['version'];
+			console.log(versionID);
+			var boardID = params['board'];
+			console.log(boardID);
 
 			this.db.select('doc', {id: id})
 				.subscribe((data: any[]) => {
@@ -54,6 +58,9 @@ export class DocComponent implements OnInit {
 
 							this.path = "/documents/" + this.activeVersion.filename;
 							this.loadBoards(this.activeVersion.id);
+							if (boardID) {
+								setTimeout(() => $('#click-'+boardID).trigger('click'), 1000);
+							}
 						});
 				});
 		})
@@ -89,7 +96,7 @@ export class DocComponent implements OnInit {
 					title: this.commentTitleField, 
 					message: this.commentField,
 					targetName: this.doc.name,
-					link: '/doc/'+this.doc.id
+					link: '/doc/' + this.doc.id + '/' + this.activeVersion.id + '/' + newboard['id']
 				});
 				
 				this.loadBoards(this.activeVersion.id);

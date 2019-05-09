@@ -21,8 +21,8 @@ export class BoardComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
-		this.loadComments()
-		this.loadAccounts() // bad in real applications
+		this.loadComments();
+		this.loadAccounts(); // bad in real applications
 	}
 
 	loadComments() {
@@ -56,6 +56,7 @@ export class BoardComponent implements OnInit {
 	}
 
 	onMarkerClick(event: any) {
+		this.loadComments();
 		$('#' + this.board['id']).modal('show');
 		event.stopPropagation();
 		event.preventDefault();

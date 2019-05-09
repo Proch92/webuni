@@ -1,4 +1,4 @@
-<img src="assets/board.svg" (click)="onMarkerClick($event)">
+<img src="assets/board.svg" id="click-{{board.id}}" (click)="onMarkerClick($event)">
 
 <div class="modal fade" id="{{board.id}}" tabindex="-1" role="dialog" aria-labelledby="boardModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
