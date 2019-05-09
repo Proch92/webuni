@@ -72,7 +72,7 @@ export class NewdocComponent implements OnInit {
 						});
 					});
 
-				this.zone.run(() => this.router.navigateByUrl('/rvwdash'));
+				this.zone.run(() => this.router.navigateByUrl('/rvwdash/'+this.session.getAccountID()));
 			});
 	}
 

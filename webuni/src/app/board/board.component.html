@@ -12,8 +12,8 @@
 			<div class="modal-body">
 				<ul class="list-group list-group-flush">
 					<li class="list-group-item" *ngFor="let comment of comments">
-						<p class="font-weight-bold">{{findOwner(comment.owner)}}</p>
-						<p>{{comment.text}}</p>
+						<i class="material-icons mr-2">face</i><h5 class="font-weight-bold" style="display: inline">{{findOwner(comment.owner)}}</h5>
+						<p class="mt-1">{{comment.text}}</p>
 					</li>
 				</ul>
 			</div>

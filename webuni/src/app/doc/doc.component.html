@@ -4,7 +4,6 @@
 			<h1 class="btn-group mr-auto">{{doc.name}}</h1>
 			<span *ngIf="doc.owner == sessionID" class="btn-group btn-group-lg" role="group" aria-label="document control dashboard" style="display: inline;">
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#freezeModal">Freeze Version</button>
-				<button type="button" class="btn btn-danger btn-sm"><i class="material-icons">delete_outline</i></button>
 			</span>
 		</div>
 
@@ -79,7 +78,7 @@
 		</div>
 		<ul class="list-group list-group-flush card-body">
 			<li class="list-group-item" *ngFor="let version of versions">
-				<a routerLink="/doc/{{doc.id}}/{{version.id}}">{{version.version}} - {{version.comment}}</a>
+				<a routerLink="/doc/{{doc.id}}/{{version.id}}" [class.text-muted]="version.id != activeVersion.id" [class.text-dark]="version.id == activeVersion.id" [class.font-weight-bold]="version.id == activeVersion.id">{{version.version}} - {{version.comment}}</a>
 			</li>
 		</ul>
 	</div>
